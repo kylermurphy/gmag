@@ -2,7 +2,7 @@
 
 Basic documentation for gmag code. 
 
-## Magnetoemters 
+## Magnetometers 
 
 Station data can typically be downloaded from the Homepage of each array (below). However, a significant amount of array and station data can be readily downloaded from the [THEMIS data server](http://themis.ssl.berkeley.edu/data/themis/thg/l2/mag/), [THEMIS ftp server](ftp://justice.ssl.berkeley.edu), and correspondeing [CDAWeb mirror](ftp://cdaweb.gsfc.nasa.gov/pub/data/themis/thg/l2/mag/) in the form of CDFs.
 
