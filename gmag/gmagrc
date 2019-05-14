@@ -1,0 +1,25 @@
+;Example gmag configuration file.
+;To activate the configuration file
+;move file to the gmag directory
+;~/.gmag/gmagrc
+
+[DEFAULT]
+;The directory where data will loaded
+;and downloaded from
+data_dir = D:\data
+
+;Email and institute. Used for dowloading
+;certian data sets
+uemail =
+uinstitute = 
+
+;Required for downloading CARISMA
+;magnetometer data
+ca_http = http://data.carisma.ca/
+
+;Required for downloading IMAGE
+;magnetometer data.
+;If these are lef empty then IMAGE
+;data will not dowload.
+im_uname =
+im_http = http://space.fmi.fi/image/www/index.php?page=request
