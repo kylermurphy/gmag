@@ -13,7 +13,8 @@ def load(sdate,
               'Flow Pressure',
               'Kp',
               'DST Index',
-              'AE Index']):
+              'AE Index',
+              'f10.7 index']):
 
     sdate = pd.to_datetime(sdate)
     edate = pd.to_datetime(edate)
@@ -27,6 +28,7 @@ def load(sdate,
 
     c_df = clean(o_dat.copy())
     c_df.columns = c_df.columns.str.replace(',', '')
+    c_df.columns = c_df.columns.str.replace('.', '')
     c_df.columns = c_df.columns.str.replace(' ', '_')
 
     return c_df
