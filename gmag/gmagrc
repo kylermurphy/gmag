@@ -23,3 +23,9 @@ ca_http = http://data.carisma.ca/
 ;data will not dowload.
 im_uname =
 im_http = http://space.fmi.fi/image/www/index.php?page=request
+
+;Required for doloading THEMIS
+;magnetometer data.
+th_http = http://themis.ssl.berkeley.edu/data/themis/
+
+

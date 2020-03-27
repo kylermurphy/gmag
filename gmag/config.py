@@ -82,7 +82,7 @@ def load_config():
         config_dic['ca_http'] = configf['DEFAULT']['ca_http']
     else:
         config_dic['uinstitute'] = None
-    # IMAGE download Adress
+    # IMAGE download address
     if configf['DEFAULT']['im_http']:
         config_dic['im_http'] = configf['DEFAULT']['im_http']
     else:
@@ -92,7 +92,11 @@ def load_config():
         config_dic['im_uname'] = configf['DEFAULT']['im_uname']
     else:
         config_dic['im_uname'] = None
-
+    # THEMIS download address
+    if configf['DEFAULT']['th_http']:
+        config_dic['th_http'] = configf['DEFAULT']['th_http']
+    else:
+        config_dic['th_http'] = None
     return config_dic
 
 
