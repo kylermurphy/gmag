@@ -24,6 +24,11 @@ Notes
     Acknowledgement: S. Mende and C. T. Russell for use of the GMAG data 
     and NSF for support through grant AGS-1004814.
 
+    Some Arrays other then themis are loaded using the themis module, as
+    they are downloaded from the THEMIS webiste and stored in the same 
+    format as THEMIS. Please be sure to use proper acknoledgments when
+    downloading data from the other Arrays.
+
 References
 ----------
 
@@ -32,15 +37,17 @@ References
 
 
 import os
+import wget
 import pandas as pd
 import numpy as np
 
+import cdflib
 import gmag
 
 from gmag import utils
 from urllib.parse import urljoin
 
-local_dir = os.path.join(gmag.config_set['data_dir'],'magnetometer\\THEMIS\\')
+local_dir = os.path.join(gmag.config_set['data_dir'],'magnetometer','THEMIS')
 http_dir = gmag.config_set['th_http']
 
 # check if local dir exists
@@ -61,7 +68,7 @@ def list_files(site,
      Used to generate a list of files for either downloading or loading
 
      Directory structure is assumed
-     local_dir\\YYYY\\MM\\DD\\filename
+     local_dir\\YYYY\\site\\filename
 
     Parameters
     ----------
@@ -101,9 +108,8 @@ def list_files(site,
         # directory location
         # THEMIS data is store in local_dir as YYYY\MM\DD\themis_file
         fdr = os.path.join(local_dir,
-                           '{0:04d}'.format(dt.year),
-                           '{0:02d}'.format(dt.month),
-                           '{0:02d}'.format(dt.day))
+                           site.lower(),
+                           '{0:04d}'.format(dt.year))
         if not os.path.exists(fdr):
             os.makedirs(fdr)
 
@@ -116,15 +122,57 @@ def list_files(site,
     return f_df
 
 
-def download():
-    pass
+def download(site=None,
+             sdate=None,
+             ndays=1,
+             edate=None,
+             f_df=None,
+             force=False,
+             verbose=True):
+    """Download THEMIS magnetometer data from the THEMIS website
+    
+    Requires wget to download data.
+
+    Parameters
+    ----------
+    site : str
+        Magnetometer site to load file names for
+    sdate : str or datetime-like
+        Initial day to be loaded
+    ndays : int, optional
+        Number of days to be listed  (the default is 1, which will create a DataFram for a single file)
+    edate : str, optional
+        Last day in generated list (the default is None, which will defualt to ndays)
+    f_df: DataFrame 
+        List of files to be loaded
+    force: bool, optional
+    verbose : bool, optional
+        Outputs some additional information, by default 0
+    """
+
+    # get file names
+    if f_df is None: 
+        f_df = list_files(site, sdate, ndays=ndays, edate=edate)   
+    # download files
+    for di, row in f_df.iterrows():
+        # get file name and check
+        # if it exists
+        fn = os.path.join(row['dir'], row['fname'])
+        if not os.path.exists(fn) or force:
+            try: 
+                wget.download(row['hdir']+row['fname'],out=row['dir'])
+            except:
+                print('HTTP file not found {0}'.format(row['fname']))
+        elif verbose:
+            print('File {0} exists use force=True to download'.format(row['fname']))         
 
 
 def load(site: str = ['KUUJ'],
          sdate='2010-01-01',
          ndays: int = 1,
          edate=None,
-         dl=False):
+         dl=True,
+         force=False):
 
     if type(site) is str:
         site = [site]
@@ -135,112 +183,37 @@ def load(site: str = ['KUUJ'],
         # get list of file names
         f_df = list_files(stn.upper(), sdate, ndays=ndays, edate=edate)
 
+        if dl:
+            print('Downloading Data:')
+            download(f_df=f_df, force=force)
+
         s_df = pd.DataFrame()
         for di, row in f_df.iterrows():
-            print(os.path.join(row['dir'], row['fname']))
+            print('Loading: '+os.path.join(row['dir'], row['fname']))
 
             # get file name and check
             # if it exists
             fn = os.path.join(row['dir'], row['fname'])
             if not os.path.exists(fn):
                 print('File does not exist: {0}'.format(fn))
-                if dl:
-                    print('Downloading:')
-                    download()
-                    if not os.path.exists(fn):
-                        print('File could not be downloaded')
-                        continue
-                else:
-                    continue
-
-            i_df = pd.read_fwf(fn, header=None, skiprows=1,
-                               names=['t',
-                                      stn.upper()+'_X',
-                                      stn.upper()+'_Y',
-                                      stn.upper()+'_Z',
-                                      stn.upper()+'_flag'],
-                               widths=[14, 10, 10, 10, 2],
-                               compression=comp)
-
-            try:
-                i_df['t'] = pd.to_datetime(i_df['t'],
-                                           format='%Y%m%d%H%M%S')
-            except:
                 continue
+
+            # open cdf file and get data
+            cdf_file = cdflib.CDF(fn)
+            dat = cdf_file.varget('thg_mag_'+stn.lower()) 
+            col = cdf_file.varget('thg_mag_'+stn.lower()+'_labl')
+            cdf_file.close()
+            t   = pd.to_datetime(cdf_file.varget('thg_mag_'+stn.lower()+'_time'),unit='s')          
+            
+            # create data frame 
+            i_df = pd.DataFrame(data=dat,columns=[stn.upper()+' '+x for x in col])
+            i_df['t'] = t
             i_df = i_df.set_index('t')
-
+            # append to returned data frame    
             s_df = s_df.append(i_df)
+           
 
-        # clean data
-        if not s_df.empty:
-            c_df = clean(s_df)
-        # append files
-        if d_df.empty:
-            d_df = c_df
-        else:
-            d_df = d_df.join(c_df)
-
-    # rotate data into HDZ
-    if d_df.empty:
-        return None
-
-    r_df = rotate(d_df, site, sdate)
-
-    return r_df
+    return s_df
 
 
-def clean(i_df):
-
-    # get a list of column names
-    c_name = list(i_df.columns.values)
-    # find the flag column
-    flag = next((s for s in c_name if 'flag' in s), None)
-    zcom = next((s for s in c_name if '_Z' in s), None)
-    # find bad data
-    # flag is '.' for good
-    # anything else is bad
-    if flag:
-        i_df.loc[i_df[flag] != '.', 0:3] = np.nan
-    # z component should always
-    # be positive
-    if zcom:
-        i_df.loc[i_df[zcom] < 0, 0:3] = np.nan
-
-    return i_df
-
-
-def rotate(i_df,
-           site,
-           date):
-
-    dt = pd.to_datetime(date)
-    # get a list of column names
-    c_name = list(i_df.columns.values)
-
-    for stn in site:
-        stn = stn.upper()
-        if stn+'_X' not in c_name:
-            continue
-
-        stn_dat = utils.load_station_coor(param=stn, year=dt.year)
-        dec = float(stn_dat['declination'])
-
-        h = i_df[stn+'_X'].astype(float) * np.cos(np.deg2rad(dec)) + \
-            i_df[stn+'_Y'].astype(float) * np.sin(np.deg2rad(dec))
-        d = i_df[stn+'_Y'].astype(float) * np.cos(np.deg2rad(dec)) - \
-            i_df[stn+'_X'].astype(float) * np.sin(np.deg2rad(dec))
-
-        i_df[stn+'_H'] = h
-        i_df[stn+'_D'] = d
-
-        # fill in station cooridinat info
-        # this would be better as metadata
-        # but not possible in pandas
-        i_df[stn+'_declination'] = float(stn_dat['declination'])
-        i_df[stn+'_cgmlat'] = float(stn_dat['cgm_latitude'])
-        i_df[stn+'_cgmlon'] = float(stn_dat['cgm_longitude'])
-        i_df[stn+'_lshell'] = float(stn_dat['lshell'])
-        i_df[stn+'_mlt'] = float(stn_dat['mlt_midnight'])
-
-    return i_df
 

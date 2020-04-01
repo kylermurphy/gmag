@@ -42,7 +42,7 @@ import gmag
 from gmag import utils
 from urllib.parse import urljoin
 
-local_dir = os.path.join(gmag.config_set['data_dir'],'magnetometer\\CARISMA\\')
+local_dir = os.path.join(gmag.config_set['data_dir'],'magnetometer','CARISMA')
 http_dir = gmag.config_set['ca_http']
 
 # check if local dir exists
@@ -144,7 +144,7 @@ def load(site: str = ['GILL'],
 
         s_df = pd.DataFrame()
         for di, row in f_df.iterrows():
-            print(os.path.join(row['dir'], row['fname']))
+            print('Loading: '+os.path.join(row['dir'], row['fname']))
 
             # get file name and check
             # if it exists

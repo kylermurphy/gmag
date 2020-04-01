@@ -55,7 +55,7 @@ from gmag.config import get_config_file
 
 from gmag import utils
 
-local_dir =os.path.join(gmag.config_set['data_dir'],'magnetometer\\IMAGE\\')
+local_dir =os.path.join(gmag.config_set['data_dir'],'magnetometer','IMAGE')
 http_dir = gmag.config_set['im_http']
 
 # check if local dir exists
