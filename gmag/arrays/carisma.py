@@ -34,13 +34,15 @@ References
 
 
 import os
+import requests
 import pandas as pd
 import numpy as np
+import urllib.request as urlreq
 
 import gmag
 
 from gmag import utils
-from urllib.parse import urljoin
+
 
 local_dir = os.path.join(gmag.config_set['data_dir'],'magnetometer','CARISMA')
 http_dir = gmag.config_set['ca_http']
@@ -82,7 +84,8 @@ def list_files(site,
      Returns
      -------
      f_df : DataFrame
-         Pandas dataframe with columns date (file date), fname (file name), fdir (file directory)
+         Pandas dataframe with columns date (file date), fname (file name), fdir (file directory),
+         hdir (http directory)
     """
 
     # create a panda series of dates
@@ -92,7 +95,7 @@ def list_files(site,
         d_ser = pd.Series(pd.date_range(
             start=sdate, periods=ndays, freq='D'))
 
-    f_df = pd.DataFrame(columns=['date', 'fname', 'dir'])
+    f_df = pd.DataFrame(columns=['date', 'fname', 'dir', 'hdir'])
 
     # create file name and directory structure
     for di, dt in d_ser.iteritems():
@@ -112,15 +115,63 @@ def list_files(site,
         if not os.path.exists(fdr):
             os.makedirs(fdr)
 
+        # http directory
+        hdr = http_dir+'FGM/1Hz/'+'{0:04d}'.format(dt.year)+'/'
+        hdr = hdr+'{0:02d}'.format(dt.month)+'/'+'{0:02d}'.format(dt.day)+'/'
+                
+
+
         f_df = f_df.append(
-            {'date': dt, 'fname': fnm, 'dir': fdr}, ignore_index=True)
+            {'date': dt, 'fname': fnm, 'dir': fdr, 'hdir':hdr}, ignore_index=True)
 
     return f_df
 
 
-def download():
-    pass
+def download(site=None,
+             sdate=None,
+             ndays=1,
+             edate=None,
+             f_df=None,
+             force=False,
+             verbose=True):
+    """Download THEMIS magnetometer data from the THEMIS website
+    
+    Requires wget to download data.
 
+    Parameters
+    ----------
+    site : str
+        Magnetometer site to load file names for
+    sdate : str or datetime-like
+        Initial day to be loaded
+    ndays : int, optional
+        Number of days to be listed  (the default is 1, which will create a DataFram for a single file)
+    edate : str, optional
+        Last day in generated list (the default is None, which will defualt to ndays)
+    f_df: DataFrame 
+        List of files to be loaded
+    force: bool, optional
+        Force download even if file exists
+    verbose : bool, optional
+        Outputs some additional information, by default 0
+    """
+
+    # get file names
+    if f_df is None: 
+        f_df = list_files(site, sdate, ndays=ndays, edate=edate)   
+    # download files
+    for di, row in f_df.iterrows():
+        # get file name and check
+        # if it exists
+        fn = os.path.join(row['dir'], row['fname'])
+        if not os.path.exists(fn) or force:
+            try: 
+                urlreq.urlretrieve(row['hdir']+row['fname'],row['dir'])
+            except:
+                print('HTTP file not found {0}{1}'.format(row['hdir'],row['fname']))
+        elif verbose:
+            print('File {0} exists use force=True to download'.format(row['fname']))   
+    
 
 def load(site: str = ['GILL'],
          sdate='2010-01-01',

@@ -146,6 +146,7 @@ def download(site=None,
     f_df: DataFrame 
         List of files to be loaded
     force: bool, optional
+        Force download even if file exists
     verbose : bool, optional
         Outputs some additional information, by default 0
     """
@@ -157,12 +158,11 @@ def download(site=None,
     for di, row in f_df.iterrows():
         # get file name and check
         # if it exists
-        fn = os.path.join(row['dir'], row['fname'])
         if not os.path.exists(fn) or force:
             try: 
                 wget.download(row['hdir']+row['fname'],out=row['dir'])
             except:
-                print('HTTP file not found {0}'.format(row['fname']))
+                print('HTTP file not found {0}'.format(row['hdir']+row['fname']))
         elif verbose:
             print('File {0} exists use force=True to download'.format(row['fname']))         
 
@@ -195,6 +195,7 @@ def load(site: str = ['KUUJ'],
             # if it exists
             fn = os.path.join(row['dir'], row['fname'])
             if not os.path.exists(fn):
+
                 print('File does not exist: {0}'.format(fn))
                 continue
 
