@@ -187,7 +187,7 @@ def load(site: str = ['KUUJ'],
             print('Downloading Data:')
             download(f_df=f_df, force=force)
 
-        s_df = pd.DataFrame()
+
         for di, row in f_df.iterrows():
             print('Loading: '+os.path.join(row['dir'], row['fname']))
 
@@ -200,8 +200,9 @@ def load(site: str = ['KUUJ'],
 
             # open cdf file and get data
             cdf_file = cdflib.CDF(fn)
-            dat = cdf_file.varget('thg_mag_'+stn.lower()) 
+            dat = cdf_file.varget('thg_mag_'+stn.lower())
             col = cdf_file.varget('thg_mag_'+stn.lower()+'_labl')
+            td  = cdf_file.varget('thg_mag_'+stn.lower()+'_time')
             cdf_file.close()
             t   = pd.to_datetime(cdf_file.varget('thg_mag_'+stn.lower()+'_time'),unit='s')          
             
@@ -210,10 +211,10 @@ def load(site: str = ['KUUJ'],
             i_df['t'] = t
             i_df = i_df.set_index('t')
             # append to returned data frame    
-            s_df = s_df.append(i_df)
+            d_df = d_df.append(i_df)
            
 
-    return s_df
+    return d_df
 
 
 
