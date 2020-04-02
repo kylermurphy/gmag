@@ -160,6 +160,11 @@ def download(site=None,
         # if it exists
         fn = os.path.join(row['dir'], row['fname'])
         if not os.path.exists(fn) or force:
+            # if forcing download and file
+            #exists remove file before
+            #redownloading
+            if os.path.exists(fn):
+                os.remove(fn)
             try: 
                 wget.download(row['hdir']+row['fname'],out=row['dir'])
             except:

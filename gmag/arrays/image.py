@@ -181,8 +181,6 @@ def download(sdate,
             print('File {0} exists use force=True to download'.format(row['fname']))
 
          
-        
-
 
 def load(site: str = ['AND'],
          sdate='2010-01-01',
