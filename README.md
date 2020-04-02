@@ -24,7 +24,7 @@ The ```image``` modules loads data from IMAGE.
 
 The ```themis``` modules loads data from THEMIS EPO and GBO, CARISMA, CANMOS, AUTUMN and AUTUMN X, DTU, IMAGE, GIMA, MACCS, McMAC, , USGS, PENGUIN.
 
-Details on the arrays can be found [here](./Stations/README.md)
+Details on the arrays can be found [here](./gmag/README.md)
 
 ### Station Parameters
 
