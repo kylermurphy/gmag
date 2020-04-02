@@ -22,9 +22,9 @@ The ```carisma``` modules loads data from the CARISMA magnetometer array.
 
 The ```image``` modules loads data from IMAGE. 
 
-The ```themis``` modules loads data from THEMIS EPO and GBO, CARISMA, CANMOS, AUTUMN and AUTUMN X, DTU, IMAGE, GIMA, MACCS, McMAC, , USGS, PENGUIN.
+The ```themis``` modules loads data from THEMIS EPO and GBO, CARISMA, CANMOS, AUTUMN and AUTUMN X, DTU, IMAGE, GIMA, MACCS, McMAC, USGS, PENGUIN.
 
-Details on the arrays can be found [here](./gmag/README.md)
+Details on the arrays can be found [here](./gmag/README.md).
 
 ### Station Parameters
 
@@ -49,7 +49,7 @@ gill_stn = utils.load_station_coor(param='GILL',col='code',year=2012)
 
 ## Loading data
 
-The load routines in each of the modules will load (rotate if necessary) and download files. Some examples can be found in the notebooks folder. Simple examples are below. Note the load routines are the same for each array.
+The load routines in each of the modules will load (rotate if necessary) and download files. Some examples can be found in ```notebooks``` folder. Simple examples are below. Note the load routines are the same for each array.
 
 ```python
 #load CARISMA
