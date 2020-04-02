@@ -6,9 +6,19 @@ This module supports data from the IMAGE magnetometer array. Downloads data from
 Loads XYZ data and rotates into HDZ. Will load data downloaded from IMAGE website
 as well as THEMIS CDF files.
 
+Directory structure is assumed:
+local_dir\\YYYY\\MM\\file
+
+local_dir is set in gmagrc
+
 Example
 -------
 
+Download IMAGE data
+image.download('2019-01-01',ndays=10, force=True)
+
+Load IMAGE data
+df=image.load(site='AND',sdate='2019-01-01',ndays=10)
 
 Attributes
 ----------

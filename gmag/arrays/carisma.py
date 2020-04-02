@@ -4,8 +4,19 @@
 This module supports data from the CARISMA magnetometer array. Downloads data from CARISMA website.
 Loads XYZ data and rotates into HDZ. Will load data downloaded from the CARISMA website.
 
+Directory structure is assumed
+local_dir\\YYYY\\MM\\DD\\file
+
+local_dir is set in gmagrc
+
 Example
 -------
+
+Load and download data from multiple stations
+df = carisma.load(site=['GILL','ISLL','PINA'],sdate='2012-01-01',ndays=1)
+
+You can download data a site at time with carisma.download, though its
+easier to use carisma.load as it will loop through stations
 
 
 Attributes
@@ -206,7 +217,7 @@ def load(site: str = ['GILL'],
     Returns
     -------
     Pandas DataFrame
-        Cleaned and rotated (if possible) IMAGE magnetometer data
+        Cleaned and rotated (if possible) CARISMA magnetometer data
     """
     if type(site) is str:
         site = [site]

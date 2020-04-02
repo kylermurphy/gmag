@@ -5,9 +5,25 @@
 This module supports data from the THEMIS magnetometer array. Downloads data from THEMIS website.
 Loads XYZ data and rotates into HDZ.
 
+Directory structure is assumed
+local_dir\\YYYY\\site\\file
+
+local_dir is set in gmagrc
+
 Example
 -------
 
+Produce a file list for downloading, generally easier using
+themis.download is easier
+fl = themis.list_files('KUUJ','2012-01-01',ndays=2)
+themis.download(f_df=fl)
+
+Download Data, generally easier using themis.load which will
+loop through multiple sites.
+themis.download(site='KUUJ',sdate='2012-01-01',edate='2012-01-03')
+
+Load Data
+df = themis.load(site=['KUUJ','SNKQ],sdate='2012-01-01',edate='2012-01-03')
 
 Attributes
 ----------
@@ -198,8 +214,8 @@ def load(site: str = ['KUUJ'],
     
     Returns
     -------
-    [type]
-        [description]
+    Pandas DataFrame
+        THEMIS magnetometer data
     """
     if type(site) is str:
         site = [site]
