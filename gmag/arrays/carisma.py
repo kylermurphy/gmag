@@ -75,7 +75,7 @@ def list_files(site,
          Initial day to be loaded
      ndays : int, optional
          Number of days to be listed  (the default is 1, which will create a DataFram for a single file)
-     edate : str, optional
+     edate : str or datetime-like, optional
          Last day in generated list (the default is None, which will defualt to ndays)
      gz : bool, optional
          Create gzipped filenames(the default is True)
@@ -145,7 +145,7 @@ def download(site=None,
         Initial day to be loaded
     ndays : int, optional
         Number of days to be listed  (the default is 1, which will create a DataFram for a single file)
-    edate : str, optional
+    edate : str or datetime-like, optional
         Last day in generated list (the default is None, which will defualt to ndays)
     f_df: DataFrame 
         List of files to be loaded
@@ -182,9 +182,32 @@ def load(site: str = ['GILL'],
          ndays: int = 1,
          edate=None,
          gz=True,
-         dl=False,
+         dl=True,
          force=False):
-
+    """Loads CARISMA F01 files and F01.gz files
+    
+    Parameters
+    ----------
+    site : str, optional
+        Site or list of sites to load, by default ['GILL']
+    sdate : str, optional
+        Start day to load, by default '2010-01-01'
+    ndays : int, optional
+        Number of days to load, by default 1
+    edate : str or datetime-like, optional
+        End day to load, by default None
+    gz : bool, optional
+        Load gzip files, by default True
+    dl : bool, optional
+        Download files if they don't exist, by default True
+    force : bool, optional
+        Force downloading files again, by default False
+    
+    Returns
+    -------
+    Pandas DataFrame
+        Cleaned and rotated (if possible) IMAGE magnetometer data
+    """
     if type(site) is str:
         site = [site]
     if gz:
@@ -252,7 +275,21 @@ def load(site: str = ['GILL'],
 
 
 def clean(i_df):
+    """Remove bad data from CARISMA DataFrame
 
+    This is a function so that additional utility can
+    be easily added.
+
+    Parameters
+    ----------
+    i_df : DataFrame
+        CARISMA magnetometer data loaded with carisma.load()
+
+    Returns
+    -------
+    c_df : DataFrame
+        Cleaned CARISMA magnetometer data
+    """
     # get a list of column names
     c_name = list(i_df.columns.values)
     # find the flag column
@@ -274,7 +311,25 @@ def clean(i_df):
 def rotate(i_df,
            site,
            date):
+    """Rotate XYZ to HDZ for select sites, append
+    to existing DataFrame and return
 
+    Parameters
+    ----------
+    i_df : DataFrame
+        CARISMA magnetometer data loaded with image.load()
+    site : site to rotate
+        List of sites to rotate
+    date : str or datetime-like
+        Date to load declination for
+
+    Returns
+    -------
+    i_df : DataFrame
+        DataFrame with HD magnetic field coordinates
+        and station cgm coordinates, lshell and 
+        declination
+    """
     dt = pd.to_datetime(date)
     # get a list of column names
     c_name = list(i_df.columns.values)
@@ -309,5 +364,3 @@ def rotate(i_df,
 
     return i_df
 
-
-#dat = load(site=['weyb'], sdate='2014-10-28', ndays=1)

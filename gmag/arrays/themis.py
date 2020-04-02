@@ -78,7 +78,7 @@ def list_files(site,
          Initial day to be loaded
      ndays : int, optional
          Number of days to be listed  (the default is 1, which will create a DataFram for a single file)
-     edate : str, optional
+     edate : str or datetime-like, optional
          Last day in generated list (the default is None, which will defualt to ndays)
 
      Returns
@@ -141,7 +141,7 @@ def download(site=None,
         Initial day to be loaded
     ndays : int, optional
         Number of days to be listed  (the default is 1, which will create a DataFram for a single file)
-    edate : str, optional
+    edate : str or datetime-like, optional
         Last day in generated list (the default is None, which will defualt to ndays)
     f_df: DataFrame 
         List of files to be loaded
@@ -179,7 +179,28 @@ def load(site: str = ['KUUJ'],
          edate=None,
          dl=True,
          force=False):
-
+    """Load THEMIS CDF files.
+    
+    Parameters
+    ----------
+    site : str, optional
+        Site of list of sites  to load, by default ['KUUJ']
+    sdate : str or datetime-like, optional
+        Start date to load, by default '2010-01-01'
+    ndays : int, optional
+        Number of days to load, by default 1
+    edate : str or datetime-like, optional
+        End date to load if define defaults to this, by default None
+    dl : bool, optional
+        Download data before loading, by default True
+    force : bool, optional
+        Force download if already exists, by default False
+    
+    Returns
+    -------
+    [type]
+        [description]
+    """
     if type(site) is str:
         site = [site]
 

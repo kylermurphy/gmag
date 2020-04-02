@@ -71,9 +71,12 @@ def list_files(sdate,
     """Return a Pandas DataFrame containing the date, file name, and directory
     for every file. Assume filename is generated for every day.
 
-    Used to generate a list of files for either downloading or loading
+    Used to generate a list of files for either downloading or loading.
 
-    Directory structure is assumed
+    Assumes files have been downloaded using the download routine, and that
+    files are all compressed.
+
+    Directory structure is assumed:
     local_dir\\YYYY\\MM\\filename
 
     Parameters
@@ -82,7 +85,7 @@ def list_files(sdate,
         Initial day to be loaded
     ndays : int, optional
         Number of days to be listed  (the default is 1, which will create a DataFram for a single file)
-    edate : str, optional
+    edate : str or datetime-like, optional
         Last day in generated list (the default is None, which will defualt to ndays)
     prefix : str, optional
         Prefix for filename (the default is 'image')
@@ -128,7 +131,7 @@ def list_files(sdate,
     return f_df
 
 
-def download(sdate,
+def download(sdate=None,
              ndays=1,
              edate=None,
              gz=True,
@@ -189,8 +192,8 @@ def load(site: str = ['AND'],
          sdate='2010-01-01',
          ndays: int = 1,
          edate=None,
-         gz=True
-         dl=False,
+         gz=True,
+         dl=True,
          force=False):
     """Loads IMAGE magnetometer data in the .col2 data
     format
@@ -207,14 +210,14 @@ def load(site: str = ['AND'],
         End date to load. If set overrides ndays, by default None
     gz : bool, optional
         File to be loaded is gzip file, by default True
-    dl : bool, False
-        Download data if it doesn't extist
+    dl : bool, True
+        Download data if it doesn't extist, default True
     force : bool, False
         Force download
     Returns
     -------
     r_df : DataFrame
-        Cleaned and rotated IMAGE magnetometer data
+        Cleaned and rotated (if possible) IMAGE magnetometer data
     """
     # create a site list for returns
     if type(site) is str:
