@@ -133,6 +133,7 @@ def download(sdate,
              edate=None,
              gz=True,
              force=False,
+             f_df=None,
              verbose=0):
     """Download IMAGE magnetometer data from the IMAGE request website
 
@@ -149,12 +150,15 @@ def download(sdate,
         Download gzipped files, by default True
     force: bool, optional
         Force download even if file exists
+    f_df : DataFrame
+        List of files to be loaded
     verbose : int, optional
         List files being downloaded, by default 0
     """
 
     # get file names
-    f_df = list_files(sdate, ndays=ndays, edate=edate, gz=gz)
+    if f_df is None:
+        f_df = list_files(sdate, ndays=ndays, edate=edate, gz=gz)
 
     for ind, row in f_df.iterrows():
         # generate file name
@@ -181,12 +185,13 @@ def download(sdate,
             print('File {0} exists use force=True to download'.format(row['fname']))
 
          
-
 def load(site: str = ['AND'],
          sdate='2010-01-01',
          ndays: int = 1,
          edate=None,
-         gz=True):
+         gz=True
+         dl=False,
+         force=False):
     """Loads IMAGE magnetometer data in the .col2 data
     format
 
@@ -202,7 +207,10 @@ def load(site: str = ['AND'],
         End date to load. If set overrides ndays, by default None
     gz : bool, optional
         File to be loaded is gzip file, by default True
-
+    dl : bool, False
+        Download data if it doesn't extist
+    force : bool, False
+        Force download
     Returns
     -------
     r_df : DataFrame
@@ -214,6 +222,9 @@ def load(site: str = ['AND'],
 
     # get list of file names
     f_df = list_files(sdate, ndays=ndays, edate=edate, gz=gz)
+
+    if dl:
+        download(f_df=f_df,gz=gz,force=force)
 
     # create empty data frame for data
     d_df = pd.DataFrame()
