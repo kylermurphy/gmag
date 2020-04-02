@@ -10,8 +10,8 @@ data_dir = D:\data
 
 ;Email and institute. Used for dowloading
 ;certian data sets
-uemail =
-uinstitute = 
+uemail = krmurphy@umd.edu
+uinstitute = UMD
 
 ;Required for downloading CARISMA
 ;magnetometer data

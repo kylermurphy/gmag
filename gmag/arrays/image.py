@@ -388,6 +388,9 @@ def rotate(i_df,
 
     for stn in site:
         stn_dat = utils.load_station_coor(param=stn, year=dt.year)
+        # if the stn_dat can't be found don't rotate
+        if stn_dat is None:
+            return i_df
         dec = float(stn_dat['declination'])
 
         # some of the IMAGE magnetometers
