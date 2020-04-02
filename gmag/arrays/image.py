@@ -44,11 +44,7 @@ import os
 import pandas as pd
 import numpy as np
 import gzip
-
-try:
-    import mechanicalsoup as ms
-except ImportError:
-    ms = None
+import wget
 
 import gmag
 from gmag.config import get_config_file
@@ -133,42 +129,17 @@ def list_files(sdate,
 
 
 def download(sdate,
-             uname: str=gmag.config_set['im_uname'],
-             uemail: str=gmag.config_set['uemail'],
-             uinstitute: str=gmag.config_set['uinstitute'],
-             site=None,
              ndays=1,
              edate=None,
              gz=True,
+             force=False,
              verbose=0):
     """Download IMAGE magnetometer data from the IMAGE request website
-
-    Requires MechanicalSoup to fill out a form and provide user info
-
-    Uses
-
-    image.download('2010-01-01',uname='John Doe', uemail='jd.at.aol.com',
-        uinstitute='NASA')
-
-    image.download('20181230', edate='20190101', uname='John Doe',
-        uemail='jd.at.aol.com', uinstitute='NASA', gz=True, verbose=1)
-
-    image.download('20181230', ndays=20, uname='John Doe',
-        uemail='jd.at.aol.com', uinstitute='NASA', gz=True, verbose=1)
 
     Parameters
     ----------
     sdate : str or datetime-like
         Initial day to be downloaded
-    uname : str
-        User name for form
-    uemail : str
-        User email for form
-    uinstitute : str
-        User institute for form
-    site : [str], optional
-        List of stations to download, by default None which
-        will download all of the stations
     ndays : int, optional
         Number of days to download, by default 1
     edate : str or datetime-like, optional
@@ -176,66 +147,41 @@ def download(sdate,
         By default None
     gz : bool, optional
         Download gzipped files, by default True
+    force: bool, optional
+        Force download even if file exists
     verbose : int, optional
         List files being downloaded, by default 0
     """
-
-    if ms is None:
-        print('Mechanical Soup is required for downloading IMAGE data')
-        pass
-    if uname is None or uemail is None or uinstitute is None:
-        print('A user name, email, and institute are required to download IMAGE data.')
-        print('These can be set in the function call or in the configuration file.')
-        print('The configuration file is:')
-        print(get_config_file())
-        pass
 
     # get file names
     f_df = list_files(sdate, ndays=ndays, edate=edate, gz=gz)
 
     for ind, row in f_df.iterrows():
-        # create a browser object to gather and
-        # submit form information
-        # open IMAGE dataform webpage
-        # and select form
-        im_br = ms.StatefulBrowser()
-        im_br.open(http_dir)
-        im_br.select_form(
-            'form[action="../../cgi-bin/imagecgi/image-data.cgi"]')
+        # generate file name
+        fn = os.path.join(row['dir'], row['fname'])
+        # only donwnload if file does not exist
+        #or force is true
+        if not os.path.exists(fn) or force:
+            # if forcing download and file
+            #exists remove file before
+            #redownloading
+            if os.path.exists(fn):
+                os.remove(fn)
 
-        # fill out form
-        im_br["start"] = '{0:04d}{1:02d}{2:02d}00'.format(
-            row['date'].year, row['date'].month, row['date'].day)
-        im_br["eventlength"] = "24"
-
-        # always download col2.dat format
-        im_br["column2"] = True
-        # download select stations
-        if site is not None:
-            im_br["station"] = "mylist"
-            im_br["mystation"] = site
-        # set gz or not
-        if gz:
-            im_br["compression"] = "gz"
+            # generate http link for file
+            hlink = http_dir+'starttime={0:04d}{1:02d}{2:02d}&length=1440&format=text&sample_rate=10'.format(
+                row['date'].year, row['date'].month, row['date'].day)
+            if gz:
+                hlink = hlink+'&compress'
+            #download data
+            print(hlink)
+            req = wget.download(hlink,out=fn,bar=wget.bar_adaptive)
+            print('\n {}'.format(req))
         else:
-            im_br["compression"] = "no"
-        # fill out obligatory info
-        im_br["yourname"] = uname
-        im_br["institute"] = uinstitute
-        im_br["email"] = uemail
+            print('File {0} exists use force=True to download'.format(row['fname']))
 
-        # submit form and download file
-        # im_res = .submit_selected() do we want an oppourtunity to print the
-        # response?
-        im_br.submit_selected()
-        try:
-            im_br.download_link(im_br.find_link(url_regex='col2'),
-                                file=os.path.join(row['dir'], im_br.find_link(url_regex='col2').string))
-            if verbose == 1:
-                print(
-                    "Downloading: " + os.path.join(row['dir'], im_br.find_link(url_regex='col2').string))
-        except BaseException:
-            print("Link not found: " + os.path.join(row['dir'], row['fname']))
+         
+        
 
 
 def load(site: str = ['AND'],

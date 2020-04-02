@@ -67,16 +67,6 @@ def load_config():
     
     # Read in configuration setting for downloading
     # data set
-    # User email
-    if configf['DEFAULT']['uemail']:
-        config_dic['uemail'] = configf['DEFAULT']['uemail']
-    else: 
-        config_dic['uemail'] = None
-    # User institue
-    if configf['DEFAULT']['uinstitute']:
-        config_dic['uinstitute'] = configf['DEFAULT']['uinstitute']
-    else: 
-        config_dic['uinstitute'] = None
     # Carisma download address
     if configf['DEFAULT']['ca_http']:
         config_dic['ca_http'] = configf['DEFAULT']['ca_http']
@@ -86,12 +76,7 @@ def load_config():
     if configf['DEFAULT']['im_http']:
         config_dic['im_http'] = configf['DEFAULT']['im_http']
     else:
-        config_dic['im_uname'] = None
-    # IMAGE user name
-    if configf['DEFAULT']['im_uname']:
-        config_dic['im_uname'] = configf['DEFAULT']['im_uname']
-    else:
-        config_dic['im_uname'] = None
+        config_dic['im_http'] = None
     # THEMIS download address
     if configf['DEFAULT']['th_http']:
         config_dic['th_http'] = configf['DEFAULT']['th_http']

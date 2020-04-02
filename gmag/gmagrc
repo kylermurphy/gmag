@@ -8,21 +8,13 @@
 ;and downloaded from
 data_dir = D:\data
 
-;Email and institute. Used for dowloading
-;certian data sets
-uemail = krmurphy@umd.edu
-uinstitute = UMD
-
 ;Required for downloading CARISMA
 ;magnetometer data
 ca_http = http://data.carisma.ca/
 
 ;Required for downloading IMAGE
 ;magnetometer data.
-;If these are lef empty then IMAGE
-;data will not dowload.
-im_uname =
-im_http = http://space.fmi.fi/image/www/index.php?page=request
+im_http = https://space.fmi.fi/image/www/data_download.php?
 
 ;Required for doloading THEMIS
 ;magnetometer data.
