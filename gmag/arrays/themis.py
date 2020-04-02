@@ -24,7 +24,7 @@ Notes
     Acknowledgement: S. Mende and C. T. Russell for use of the GMAG data 
     and NSF for support through grant AGS-1004814.
 
-    Some Arrays other then themis are loaded using the themis module, as
+    Some Arrays other then THEMIS are loaded using the THEMIS module, as
     they are downloaded from the THEMIS webiste and stored in the same 
     format as THEMIS. Please be sure to use proper acknoledgments when
     downloading data from the other Arrays.
@@ -158,11 +158,12 @@ def download(site=None,
     for di, row in f_df.iterrows():
         # get file name and check
         # if it exists
+        fn = os.path.join(row['dir'], row['fname'])
         if not os.path.exists(fn) or force:
             try: 
                 wget.download(row['hdir']+row['fname'],out=row['dir'])
             except:
-                print('HTTP file not found {0}'.format(row['hdir']+row['fname']))
+                print('HTTP file not found {0}'.format(row['fname']))
         elif verbose:
             print('File {0} exists use force=True to download'.format(row['fname']))         
 
@@ -195,7 +196,6 @@ def load(site: str = ['KUUJ'],
             # if it exists
             fn = os.path.join(row['dir'], row['fname'])
             if not os.path.exists(fn):
-
                 print('File does not exist: {0}'.format(fn))
                 continue
 

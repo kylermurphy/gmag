@@ -47,8 +47,14 @@ def load_station_coor(
         path = os.path.join(os.path.dirname(
             os.path.abspath(__file__)), 'Stations')
 
-    stn_dat = pd.read_csv(os.path.join(
-        path, '{0:04d}_station_cgm.txt'.format(year)))
+    # station yearly file
+    fn = os.path.join(path, '{0:04d}_station_cgm.txt'.format(year))
+
+    if not os.path.exists(fn):
+        return None
+    
+    # read in station data
+    stn_dat = pd.read_csv(fn)
 
     stn_dat = stn_dat[stn_dat[col.lower()] == param.upper()
                       ].reset_index(drop=True)

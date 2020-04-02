@@ -37,7 +37,6 @@ import os
 import requests
 import pandas as pd
 import numpy as np
-import urllib.request as urlreq
 
 import gmag
 
@@ -163,12 +162,17 @@ def download(site=None,
     for di, row in f_df.iterrows():
         # get file name and check
         # if it exists
+        # only download if force=True
         fn = os.path.join(row['dir'], row['fname'])
         if not os.path.exists(fn) or force:
-            try: 
-                urlreq.urlretrieve(row['hdir']+row['fname'],row['dir'])
-            except:
-                print('HTTP file not found {0}{1}'.format(row['hdir'],row['fname']))
+            # check for online file, if it exists
+            #get it
+            ureq = requests.get(row['hdir']+row['fname'], timeout=5.0)
+            if ureq.ok:
+                print('Downloading {0}'.format(row['hdir']+row['fname']))
+                open(fn,'wb').write(ureq.content)
+            else:
+                print('Error in request: {0}'.format(ureq.status_code))
         elif verbose:
             print('File {0} exists use force=True to download'.format(row['fname']))   
     
@@ -178,7 +182,8 @@ def load(site: str = ['GILL'],
          ndays: int = 1,
          edate=None,
          gz=True,
-         dl=False):
+         dl=False,
+         force=False):
 
     if type(site) is str:
         site = [site]
@@ -193,6 +198,10 @@ def load(site: str = ['GILL'],
         # get list of file names
         f_df = list_files(stn.upper(), sdate, ndays=ndays, edate=edate, gz=gz)
 
+        if dl:
+            print('Downloading Data:')
+            download(f_df=f_df,force=force)
+
         s_df = pd.DataFrame()
         for di, row in f_df.iterrows():
             print('Loading: '+os.path.join(row['dir'], row['fname']))
@@ -202,14 +211,7 @@ def load(site: str = ['GILL'],
             fn = os.path.join(row['dir'], row['fname'])
             if not os.path.exists(fn):
                 print('File does not exist: {0}'.format(fn))
-                if dl:
-                    print('Downloading:')
-                    download()
-                    if not os.path.exists(fn):
-                        print('File could not be downloaded')
-                        continue
-                else:
-                    continue
+                continue
 
             i_df = pd.read_fwf(fn, header=None, skiprows=1,
                                names=['t',
@@ -232,6 +234,8 @@ def load(site: str = ['GILL'],
         # clean data
         if not s_df.empty:
             c_df = clean(s_df)
+        else:
+            continue
         # append files
         if d_df.empty:
             d_df = c_df
@@ -281,6 +285,8 @@ def rotate(i_df,
             continue
 
         stn_dat = utils.load_station_coor(param=stn, year=dt.year)
+        if stn_dat is None:
+            return i_df
         dec = float(stn_dat['declination'])
 
         h = i_df[stn+'_X'].astype(float) * np.cos(np.deg2rad(dec)) + \
