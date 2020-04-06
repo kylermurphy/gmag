@@ -2,6 +2,10 @@
 
 Basic documentation for gmag code. 
 
+Requires: Pandas, NumPy, wget, requests, cdflib heliopy.
+
+Installation: ```pip instal -e .```
+
 ## gmagrc
 
 This file sets the local directory to download data. 
