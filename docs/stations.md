@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Stations a
+# Stations
 
 <div class="display compact" style="height:100%; width:100%; font-size:	12px; overflow:auto;">
 
