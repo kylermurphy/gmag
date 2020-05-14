@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# New
+# New 2
 
 <div class="display compact" style="height:100%; width:140%; font-size:	12px; overflow:auto;">
 
