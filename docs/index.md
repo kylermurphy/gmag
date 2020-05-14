@@ -4,7 +4,7 @@ layout: default
 
 # Overview
 
-This code provides the utility to download and load data from various ground-based magtometer arrays. The code for is divided into a seperate module for each array. These are the ```carisma```, ```image```, and ```themis``` modules. 
+This code provides the utility to download and load data from various ground-based magtometer arrays into a Pandas DataFrame. The code for is divided into a seperate module for each array. These are the ```carisma```, ```image```, and ```themis``` modules. 
 
 The ```carisma``` module loads data from the [CARISMA][1] magnetometer array.
 
@@ -34,7 +34,7 @@ The ```gmagrc``` files also defines the web address where data is stored for eac
 
 ## Station Parameters
 
-The names of stations, 4 letter codes, home array, geographic and geomagnetic coordinates, L-shell, and declinations are stored in [yearly files][13] and can be loaded with the ```utlis``` module. These files and the declinations are used to rotate **CARISMA** and **IMAGE** date from  geographic (XYZ) to geomagnetic coordinates (HDZ, or heZ). This is done using: 
+The names of stations, 4 letter codes, home array, geographic and geomagnetic coordinates, L-shell, and declinations are stored in [yearly coordinate files][13] and can be loaded with the ```utlis``` module. These files and the declinations are used to rotate **CARISMA** and **IMAGE** date from  geographic (XYZ) to geomagnetic coordinates (HDZ, or heZ). This is done using: 
 
 H = X cos(dec) + Y sin(dec)
 D = Y cos(dec) - H sin(dec)
@@ -54,9 +54,11 @@ gill_stn = utils.load_station_coor(
   param='GILL',col='code',year=2012)
 ```
 
+The [yearly coordinate files][13] are generated using [Convert_coords.ipynb][15] which requires the [IGRF][16] and [aacgmv2][17] modules which can be difficult to install. For simplicity, the coordinate files are pregenerated and will updated when possible.
+
 ## Loading Data
 
-The load routines in each of the modules will load (rotate if necessary) and download files. Some examples can be found in [notebooks][15] folder. Simple examples are below. Note the load routines are the same for each array.
+The load routines in each of the modules will load (rotate if necessary) and download files. Some examples can be found in [notebooks][18] folder. Simple examples are below. The load routines are similar for each array and load data in Pandas DataFrames.
 
 ```python
 #load CARISMA
@@ -88,4 +90,7 @@ df = themis.load('KUUJ',sdate='2012-01-01',ndays=22, dl=True,force=True)
 [12]: ./arrays_stations.md
 [13]: https://github.com/kylermurphy/gmag/tree/master/gmag/Stations
 [14]: ftp://apollo.ssl.berkeley.edu/pub/THEMIS/3%20Ground%20Systems/3.2%20Science%20Operations/Science%20Operations%20Documents/GMAG_Station_Data_Processing_Notes.pdf
-[15]: https://github.com/kylermurphy/gmag/tree/master/notebooks
+[15]: https://github.com/kylermurphy/gmag/blob/master/notebooks/Convert_coords.ipynb
+[16]: https://github.com/space-physics/igrf12
+[17]: https://github.com/aburrell/aacgmv2
+[18]: https://github.com/kylermurphy/gmag/tree/master/notebooks
