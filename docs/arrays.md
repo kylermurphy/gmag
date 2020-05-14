@@ -4,6 +4,8 @@ layout: default
 
 # Arrays and Stations 
 
+[Station table and map.][1]
+
 **IMPORTANT NOTES**
 
 1. THEMIS, SPEDAS, and pySPEDAS are excellent resources for the various ground-based magnetometer arrays loaded by ```gmag```. However, data downloaded using these resources and from the THEMIS data server are not necessarily  THEMIS magnetometers. Please appropriately reference and acknowledge each array whose data you use;  acknowledgements and reference for the arrays (when available) can be found below.
@@ -13,6 +15,8 @@ layout: default
 ### Arrays
 
 Below is a list of the arrays suported by the ```gmag``` code. Additional details for each array including the arrays webiste, terms of use, data download, map of stations, and acknowledgement are found below.
+
+Information on individual stations can be found [here][1].
 
 | Array | Module | Secondary Module |
 |-------|--------|------------------|
@@ -154,3 +158,4 @@ The Virgina Tech Polar Experimental Network for Geospace Upper atmosphere Invest
 - Data Download, [IDL save files](http://mist.nianet.org/IDLsavePGx/) and [CDFs](http://mist.nianet.org/CDFdata/)
 - Acknowledgement: _"Polar Experimental Network for Geospace Upper atmosphere Investigations (PENGUIn) Ground Based Observatory, PI, C. Robert Clauer, Virginia Tech. This effort is supported by the National Science Foundation through the following awards: ANT0839858, ATM922979 (Virginia Tech), and ANT0838861 (University of Michigan)."_
 
+[1]: ./stations.md
