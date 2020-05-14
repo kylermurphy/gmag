@@ -1,3 +1,7 @@
+---
+layout: default
+---
+
 # Arrays and Stations 
 
 **IMPORTANT NOTES**
@@ -12,20 +16,20 @@ Below is a list of the arrays suported by the ```gmag``` code. Additional detail
 
 | Array | Module | Secondary Module |
 |-------|--------|------------------|
-| [CARISMA](#carisma) | carisma | themis |
-| [CANMOS](#canmos) | themis | N/A |
-| [AUTUMN and AUTUMN X](#autumn-and-autumn-x)  | themis | N/A |
-| [DTU](#dtu)  | themis | N/A |
-| [IMAGE](#image) | image | themis |
-| [GIMA](#gima)  | themis | N/A |
-| [MACCS](#maccs)  | themis | N/A |
-| [McMAC](#mcmac)  | themis | N/A |
-| [THEMIS EPO and GBO](#themis-epo-and-gbo)  | themis | N/A |
-| [USGS](#usgs)  | themis | N/A |
-| [PENGUIN](#penguin)  | themis | N/A |
+| [CARISMA](#carisma) | ```carisma``` | ```themis```|
+| [CANMOS](#canmos) | ```themis``` | N/A |
+| [AUTUMN and AUTUMN X](#autumn-and-autumn-x)  | ```themis``` | N/A |
+| [DTU](#dtu)  | ```themis``` | N/A |
+| [IMAGE](#image) | ```image``` | ```themis``` |
+| [GIMA](#gima)  | ```themis``` | N/A |
+| [MACCS](#maccs)  | ```themis``` | N/A |
+| [McMAC](#mcmac)  | ```themis``` | N/A |
+| [THEMIS EPO and GBO](#themis-epo-and-gbo)  | ```themis``` | N/A |
+| [USGS](#usgs)  | ```themis``` | N/A |
+| [PENGUIN](#penguin)  | ```themis``` | N/A |
 
 
-Station data can typically be downloaded from the Homepage of each array. However, a significant amount of array and station data can be readily downloaded from the [THEMIS data server](http://themis.ssl.berkeley.edu/data/themis/thg/l2/mag/), [THEMIS ftp server](ftp://justice.ssl.berkeley.edu), and correspondeing [CDAWeb mirror](ftp://cdaweb.gsfc.nasa.gov/pub/data/themis/thg/l2/mag/) in the form of CDFs.
+Station data can typically be downloaded from the homepage of each array. However, a significant amount of data can be downloaded from the [THEMIS data server](http://themis.ssl.berkeley.edu/data/themis/thg/l2/mag/), [THEMIS ftp server](ftp://justice.ssl.berkeley.edu), and corresponding [CDAWeb mirror](ftp://cdaweb.gsfc.nasa.gov/pub/data/themis/thg/l2/mag/) in the form of CDFs.
 
 The [THEMIS website](http://themis.ssl.berkeley.edu) is also an excellent resource for information pertaining the stations and corresponding arrays which are stored on the [THEMIS data server](http://themis.ssl.berkeley.edu/data/themis/thg/l2/mag/). See also this [overview](ftp://apollo.ssl.berkeley.edu/pub/THEMIS/3%20Ground%20Systems/3.2%20Science%20Operations/Science%20Operations%20Documents/GMAG_Station_Data_Processing_Notes.pdf) 
 

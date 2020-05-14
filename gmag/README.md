@@ -14,17 +14,17 @@ Below is a list of the arrays suported by the ```gmag``` code. Additional detail
 
 | Array | Module | Secondary Module |
 |-------|--------|------------------|
-| [CARISMA](#carisma) | carisma | themis|
-| [CANMOS](#canmos) | themis | N/A |
-| [AUTUMN and AUTUMN X](#autumn-and-autumn-x)  | themis | N/A |
-| [DTU](#dtu)  | themis | N/A |
-| [IMAGE](#image) | image | themis |
-| [GIMA](#gima)  | themis | N/A |
-| [MACCS](#maccs)  | themis | N/A |
-| [McMAC](#mcmac)  | themis | N/A |
-| [THEMIS EPO and GBO](#themis-epo-and-gbo)  | themis | N/A |
-| [USGS](#usgs)  | themis | N/A |
-| [PENGUIN](#penguin)  | themis | N/A |
+| [CARISMA](#carisma) | ```carisma``` | ```themis```|
+| [CANMOS](#canmos) | ```themis``` | N/A |
+| [AUTUMN and AUTUMN X](#autumn-and-autumn-x)  | ```themis``` | N/A |
+| [DTU](#dtu)  | ```themis``` | N/A |
+| [IMAGE](#image) | ```image``` | ```themis``` |
+| [GIMA](#gima)  | ```themis``` | N/A |
+| [MACCS](#maccs)  | ```themis``` | N/A |
+| [McMAC](#mcmac)  | ```themis``` | N/A |
+| [THEMIS EPO and GBO](#themis-epo-and-gbo)  | ```themis``` | N/A |
+| [USGS](#usgs)  | ```themis``` | N/A |
+| [PENGUIN](#penguin)  | ```themis``` | N/A |
 
 
 Station data can typically be downloaded from the Homepage of each array. However, a significant amount of array and station data can be readily downloaded from the [THEMIS data server](http://themis.ssl.berkeley.edu/data/themis/thg/l2/mag/), [THEMIS ftp server](ftp://justice.ssl.berkeley.edu), and correspondeing [CDAWeb mirror](ftp://cdaweb.gsfc.nasa.gov/pub/data/themis/thg/l2/mag/) in the form of CDFs.

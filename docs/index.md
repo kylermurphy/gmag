@@ -12,7 +12,7 @@ The ```image``` modules loads data from the [IMAGE][2] magnetometer array.
 
 The ```themis``` modules loads data from the [THEMIS EPO and GBO][3], [CARISMA][1], [CANMOS][4], [AUTUMN and AUTUMN X][5], [DTU][6], [IMAGE][2], [GIMA][7], [MACCS][8], [McMAC][9], [USGS][10], and [PENGUIN][11] arrays. When using the ```themis``` module be sure to properly acknowledge **each** array whose data is used. 
 
-For additional information regarding the arrays see [Arrays and Stations][12].
+For additional information regarding the arrays see [Arrays][12] and [Stations][19].
 
 ## Installation
 
@@ -90,10 +90,11 @@ df = themis.load('KUUJ',sdate='2012-01-01',ndays=22, dl=True,force=True)
 [9]: https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/jgra.50274
 [10]: https://www.usgs.gov/natural-hazards/geomagnetism
 [11]: http://mist.nianet.org/index.html
-[12]: ./arrays_stations.md
+[12]: ./arrays.md
 [13]: https://github.com/kylermurphy/gmag/tree/master/gmag/Stations
 [14]: ftp://apollo.ssl.berkeley.edu/pub/THEMIS/3%20Ground%20Systems/3.2%20Science%20Operations/Science%20Operations%20Documents/GMAG_Station_Data_Processing_Notes.pdf
 [15]: https://github.com/kylermurphy/gmag/blob/master/notebooks/Convert_coords.ipynb
 [16]: https://github.com/space-physics/igrf12
 [17]: https://github.com/aburrell/aacgmv2
 [18]: https://github.com/kylermurphy/gmag/tree/master/notebooks
+[19]: ./stations.md
