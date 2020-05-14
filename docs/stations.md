@@ -4,7 +4,7 @@ layout: default
 
 # Stations
 
-<div class="display compact" style="height:100%; width:140%; font-size:	12px; overflow:auto;">
+<div class="display compact" style="height:100%; width:100%; font-size:	12px; overflow:auto;">
 
 <table id="catalogue" class="display">
 <thead>
