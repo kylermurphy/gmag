@@ -2,6 +2,56 @@
 layout: default
 ---
 
+# Overview
+
+This code provides the utility to download and load data from various ground-based magtometer arrays. The code for is divided into a seperate module for each array. These are the **CARISMA**, **IMAGE**, and **THEMIS** modules. 
+
+The ```carisma``` module loads data from the CARISMA magnetometer array.
+
+The ```image``` modules loads data from the IMAGE magnetometer array.
+
+The ```themis``` modules loads data from the THEMIS EPO and GBO, CARISMA, CANMOS, AUTUMN and AUTUMN X, DTU, IMAGE, GIMA, MACCS, McMAC, USGS, and PENGUIN arrays.When using the **THEMIS** module be sure to properly acknowledge **each** array whose data is used. 
+
+Arrays and Stations
+
+## Installation
+
+To install the module clone the repository and within the repository directory type ```pip install -e .```
+
+## gmagrc
+
+The ```gmagrc``` file defines the local directory where magnetoemter data is downloaded.
+
+*   CARISMA files: local_dir\CARISMA\YYYY\MM\DD\station.file
+*   IMAGE files: local_dir\IMAGE\YYYY\MM\array_day.file
+*   THEMIS files: local_dir\THEMIS\site\YYYY\station.file
+
+The ```carisma``` and ```themis``` modules download a daily file for each station. The ```image``` module downloads a single file including data from multiple stations each day. 
+
+The ```gmagrc``` files also defines the web address to download data for each array. If the addreses change they can be updated here. 
+
+## Station Parameters
+
+The names of stations, 4 letter codes, home array, geographic and geomagnetic coordinates, L-shell, and declinations are stored in [yearly files][2] and can be loaded with ```????```. These files and the declinations are used to rotate **CARISMA** and **IMAGE** date from  geographic (XYZ) to geomagnetic coordinates (HDZ, or heZ). This is done using: 
+
+H = X cos(dec) + Y sin(dec)
+D = Y cos(dec) - H sin(dec)
+
+Data loaded using the ```themis``` module is not rotated as the data is generally already in geomagnetic coordinates. Details on the processing of the ground-based magnetometer data from THEMIS can be found [here][3]. 
+
+The ```util``` module will load station coordinates from text files in ./gmag/Stations/
+
+```python
+from gmag import utils
+#load all CARISMA station data for 2002
+car_stn = utils.load_station_coor(param='CARISMA',col='array',year=2002)
+
+#load GILL data from 2012
+gill_stn = utils.load_station_coor(param='GILL',col='code',year=2012)
+```
+
+## Loading Data
+
 Text can be **bold**, _italic_, or ~~strikethrough~~.
 
 [Link to another page](./another-page.html).
@@ -121,3 +171,7 @@ Long, single-line code blocks should not wrap. They should horizontally scroll i
 ```
 The final element.
 ```
+
+[1]:
+[2]: 
+[3]:ftp://apollo.ssl.berkeley.edu/pub/THEMIS/3%20Ground%20Systems/3.2%20Science%20Operations/Science%20Operations%20Documents/GMAG_Station_Data_Processing_Notes.pdf

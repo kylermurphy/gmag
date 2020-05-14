@@ -1,6 +1,6 @@
-title: Minimal theme
+title: GMAG
 logo: /assets/img/logo.png
-description: Minimal is a theme for GitHub Pages.
+description: Ground-based magnetometer pacage.
 show_downloads: true
 google_analytics:
 theme: jekyll-theme-minimal
