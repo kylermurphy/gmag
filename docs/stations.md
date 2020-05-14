@@ -44,8 +44,6 @@ layout: default
  
 $(document).ready(function() {
     $("#catalogue").dataTable( {
-        paging: true,
-        pageLength: 100,
         'data-sort': true,
         order: [[ 0, "desc" ], [3, "desc"]],
         stateSave: true,
