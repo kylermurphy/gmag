@@ -12,9 +12,13 @@ The ```image``` modules loads data from the [IMAGE][2] magnetometer array.
 
 The ```themis``` modules loads data from the [THEMIS EPO and GBO][3], [CARISMA][1], [CANMOS][4], [AUTUMN and AUTUMN X][5], [DTU][6], [IMAGE][2], [GIMA][7], [MACCS][8], [McMAC][9], [USGS][10], and [PENGUIN][11] arrays. When using the ```themis``` module be sure to properly acknowledge **each** array whose data is used. 
 
-[Arrays][12] - Additonal information on the arrays supported by ```gmag```. 
+## [Arrays][12] 
 
-[Stations][19] - Table and map of stations for each array. 
+Additonal information on the [arrays][12] supported by ```gmag```. 
+
+## [Stations][19] 
+
+Table and map of [stations][19] for each array. 
 
 ## Installation
 
