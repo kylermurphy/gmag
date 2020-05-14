@@ -10,9 +10,9 @@ The ```carisma``` module loads data from the CARISMA magnetometer array.
 
 The ```image``` modules loads data from the IMAGE magnetometer array.
 
-The ```themis``` modules loads data from the THEMIS EPO and GBO, CARISMA, CANMOS, AUTUMN and AUTUMN X, DTU, IMAGE, GIMA, MACCS, McMAC, USGS, and PENGUIN arrays.When using the **THEMIS** module be sure to properly acknowledge **each** array whose data is used. 
+The ```themis``` modules loads data from the THEMIS EPO and GBO, CARISMA, CANMOS, AUTUMN and AUTUMN X, DTU, IMAGE, GIMA, MACCS, McMAC, USGS, and PENGUIN arrays. When using the **THEMIS** module be sure to properly acknowledge **each** array whose data is used. 
 
-Arrays and Stations
+[Arrays and Stations][1]
 
 ## Installation
 
@@ -44,10 +44,12 @@ The ```util``` module will load station coordinates from text files in ./gmag/St
 ```python
 from gmag import utils
 #load all CARISMA station data for 2002
-car_stn = utils.load_station_coor(param='CARISMA',col='array',year=2002)
+car_stn = utils.load_station_coor(
+  param='CARISMA',col='array',year=2002)
 
 #load GILL data from 2012
-gill_stn = utils.load_station_coor(param='GILL',col='code',year=2012)
+gill_stn = utils.load_station_coor(
+  param='GILL',col='code',year=2012)
 ```
 
 ## Loading Data
@@ -172,6 +174,6 @@ Long, single-line code blocks should not wrap. They should horizontally scroll i
 The final element.
 ```
 
-[1]:
-[2]: 
-[3]:ftp://apollo.ssl.berkeley.edu/pub/THEMIS/3%20Ground%20Systems/3.2%20Science%20Operations/Science%20Operations%20Documents/GMAG_Station_Data_Processing_Notes.pdf
+[1]: ftp://apollo.ssl.berkeley.edu/pub/THEMIS/3%20Ground%20Systems/3.2%20Science%20Operations/Science%20Operations%20Documents/GMAG_Station_Data_Processing_Notes.pdf
+[2]: ftp://apollo.ssl.berkeley.edu/pub/THEMIS/3%20Ground%20Systems/3.2%20Science%20Operations/Science%20Operations%20Documents/GMAG_Station_Data_Processing_Notes.pdf
+[3]: ftp://apollo.ssl.berkeley.edu/pub/THEMIS/3%20Ground%20Systems/3.2%20Science%20Operations/Science%20Operations%20Documents/GMAG_Station_Data_Processing_Notes.pdf
