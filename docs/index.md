@@ -12,11 +12,13 @@ The ```image``` modules loads data from the [IMAGE][2] magnetometer array.
 
 The ```themis``` modules loads data from the [THEMIS EPO and GBO][3], [CARISMA][1], [CANMOS][4], [AUTUMN and AUTUMN X][5], [DTU][6], [IMAGE][2], [GIMA][7], [MACCS][8], [McMAC][9], [USGS][10], and [PENGUIN][11] arrays. When using the ```themis``` module be sure to properly acknowledge **each** array whose data is used. 
 
-[Arrays and Stations][12]
+For additional information regarding the stations see [Arrays and Stations][12].
 
 ## Installation
 
-To install the module clone the repository and within the repository directory type ```pip install -e .```
+```bash
+pip install -e .
+```
 
 ## gmagrc
 
@@ -28,7 +30,7 @@ The ```gmagrc``` file defines the local directory where magnetoemter data is dow
 
 The ```carisma``` and ```themis``` modules download a daily file for each station. The ```image``` module downloads a single file including data from multiple stations each day. 
 
-The ```gmagrc``` files also defines the web address to download data for each array. If the addreses change they can be updated here. 
+The ```gmagrc``` files also defines the web address where data is stored for each array. If the addreses change they can be updated here. 
 
 ## Station Parameters
 
@@ -54,14 +56,23 @@ gill_stn = utils.load_station_coor(
 
 ## Loading Data
 
-Text can be **bold**, _italic_, or ~~strikethrough~~.
+The load routines in each of the modules will load (rotate if necessary) and download files. Some examples can be found in [notebooks][15] folder. Simple examples are below. Note the load routines are the same for each array.
 
-[Link to another page](./another-page.html).
+```python
+#load CARISMA
+import gmag.carisma as carisma
+df = carisma.load(['ISLL','PINA'],'2012-01-01',ndays=2)
+df = carisma.load(['ISLL','PINA'],'2012-01-01',edate='2012-01-03')
 
+#load IMAGE
+import gmag.image as image
+df = image.load('AND','2012-01-01',ndays=21)
 
-The ```image``` modules loads data from the [IMAGE][2] magnetometer array.
+#load THEMIS, force download even if file exists
+import gmag.themis as themis
+df = themis.load('KUUJ',sdate='2012-01-01',ndays=22, dl=True,force=True)
+```
 
-The ```themis``` modules loads data from the [THEMIS EPO and GBO][3], [CARISMA][1], [CANMOS][4], [AUTUMN and AUTUMN X][5], [DTU][6], [IMAGE][2], [GIMA][7], [MACCS][8], [McMAC][9], [USGS][10], and [PENGUIN][11] arrays. When using the ```themis``` module be sure to properly acknowledge **each** array whose data is used. 
 
 [1]: http://carisma.ca/
 [2]: https://space.fmi.fi/image/www/index.php?page=contributors
@@ -77,3 +88,4 @@ The ```themis``` modules loads data from the [THEMIS EPO and GBO][3], [CARISMA][
 [12]: ./arrays_stations.md
 [13]: https://github.com/kylermurphy/gmag/tree/master/gmag/Stations
 [14]: ftp://apollo.ssl.berkeley.edu/pub/THEMIS/3%20Ground%20Systems/3.2%20Science%20Operations/Science%20Operations%20Documents/GMAG_Station_Data_Processing_Notes.pdf
+[15]: https://github.com/kylermurphy/gmag/tree/master/notebooks
