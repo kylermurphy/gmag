@@ -8,8 +8,8 @@ layout: default
 
 **IMPORTANT NOTES**
 
-1. THEMIS, SPEDAS, and pySPEDAS are excellent resources for the various ground-based magnetometer arrays loaded by ```gmag```. However, data downloaded using these resources and from the THEMIS data server are not necessarily  THEMIS magnetometers. Please appropriately reference and acknowledge each array whose data you use;  acknowledgements and reference for the arrays (when available) can be found below.
-2. The data from THEMIS are generally in geomagnetic cooridinates, though this is not a given. To overcome this the returned Pandas DataFrame stores data by labels which where in the CDF for data loaded using the ```themis``` module. These labels will specify the coordinate system of the loaded data.
+1. THEMISis an excellent resourcee for the ground-based magnetometer arrays loaded by ```gmag```. However, data downloaded from the THEMIS data server are not necessarily  THEMIS magnetometers. Please appropriately reference and acknowledge each array whose data you use;  acknowledgements and reference for the arrays (when available) can be found below.
+2. The data from the THEMIS data server are generally in geomagnetic cooridinates, though this is not a given. To overcome this the returned Pandas DataFrame stores data labels from the CDF for data loaded using the ```themis``` module. These labels will specify the coordinate system of the loaded data.
 3. CARISMA and IMAGE data loaded using the ```carisma``` and ```image``` modules are roated from XYZ to HDZ. 
 
 ### Arrays

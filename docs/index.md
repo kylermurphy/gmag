@@ -13,6 +13,7 @@ The ```image``` modules loads data from the [IMAGE][2] magnetometer array.
 The ```themis``` modules loads data from the [THEMIS EPO and GBO][3], [CARISMA][1], [CANMOS][4], [AUTUMN and AUTUMN X][5], [DTU][6], [IMAGE][2], [GIMA][7], [MACCS][8], [McMAC][9], [USGS][10], and [PENGUIN][11] arrays. When using the ```themis``` module be sure to properly acknowledge **each** array whose data is used. 
 
 [Arrays][12] - Additonal information on the arrays supported by ```gmag```. 
+
 [Stations][19] - Table and map of stations for each array. 
 
 ## Installation
@@ -23,7 +24,7 @@ pip install -e .
 
 ## gmagrc
 
-The ```gmagrc``` file defines the local directory where magnetoemter data is downloaded.
+The ```gmagrc``` file defines the local directory where magnetoemter data is downloaded and the web address where data is stored for each array. If the addreses change they can be updated here.
 
 - CARISMA files
   - local_dir\CARISMA\YYYY\MM\DD\station.file
@@ -33,8 +34,6 @@ The ```gmagrc``` file defines the local directory where magnetoemter data is dow
   - local_dir\THEMIS\site\YYYY\station.file
 
 The ```carisma``` and ```themis``` modules download a daily file for each station. The ```image``` module downloads a single file including data from multiple stations each day. 
-
-The ```gmagrc``` files also defines the web address where data is stored for each array. If the addreses change they can be updated here. 
 
 ## Station Parameters
 
