@@ -9,7 +9,7 @@ layout: default
 <table id="catalogue" class="display sortable">
 <thead>
 <tr class="header">
-<th style="font-size: 16px" data-sort>Array</th>
+<th style="font-size: 16px">Array</th>
 <th style="font-size: 16px">Code</th>
 <th style="font-size: 16px">Name</th>
 <th style="font-size: 16px">Latitude</th>
@@ -22,10 +22,10 @@ layout: default
 {% for row in site.data.station_list %}
   <tr>
   <td> {{ row.Array }} </td>
-  <td> {{row.Code}}</td>
+  <td> {{ row.Code }}</td>
   <td> {{ row.Name}} </td>
-  <td> {{row.Latitude}} </td>
-  <td> {{row.Longitude}} </td>
+  <td> {{ row.Latitude }} </td>
+  <td> {{ row.Longitude }} </td>
   </tr>
 {% endfor %}
 </tbody>
