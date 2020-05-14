@@ -134,7 +134,7 @@ The Time History of Events and Macroscal Interaction During Substorms (THEMIS) G
 
 #### USGS
 
-The Unites States Geological Survery, (USGS magnetometers)[https://www.usgs.gov/natural-hazards/geomagnetism].
+The Unites States Geological Survery, [USGS magnetometers][https://www.usgs.gov/natural-hazards/geomagnetism].
 
 - [Terms and Conditions](https://www.usgs.gov/natural-hazards/geomagnetism/science/download-data?qt-science_center_objects=0#qt-science_center_objects)
 - [Data Download](https://www.usgs.gov/natural-hazards/geomagnetism/science/web-service-0?qt-science_center_objects=0#qt-science_center_objects)
@@ -145,7 +145,7 @@ The Unites States Geological Survery, (USGS magnetometers)[https://www.usgs.gov/
 
 #### PENGUIN
 
-The Virgina Tech Polar Experimental Network for Geospace Upper atmosphere Investigations, [PENGUIn](http://mist.nianet.org/index.html) Ground Based Observatory.
+The Virgina Tech Polar Experimental Network for Geospace Upper atmosphere Investigations, [PENGUIN](http://mist.nianet.org/index.html) Ground Based Observatory.
 
 - [Terms and Conditions](http://mist.nianet.org/CDFdata/VT_MIST_Data_Policy.pdf)
 - Data Download, [IDL save files](http://mist.nianet.org/IDLsavePGx/) and [CDFs](http://mist.nianet.org/CDFdata/)
