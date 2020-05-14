@@ -6,7 +6,7 @@ layout: default
 
 <div class="display compact" style="height:100%; width:140%; font-size:	12px; overflow:auto;">
 
-<table id="catalogue" class="display">
+<table id="catalogue" class="display sortable">
 <thead>
 <tr class="header">
 <th style="font-size: 16px" data-sort>Array</th>
@@ -14,7 +14,6 @@ layout: default
 <th style="font-size: 16px">Name</th>
 <th style="font-size: 16px">Latitude</th>
 <th style="font-size: 16px">Longitude</th>
-<th style="font-size: 16px">Wavelength</th>
 
 </tr>
 </thead>
