@@ -12,7 +12,7 @@ The ```image``` modules loads data from the [IMAGE][2] magnetometer array.
 
 The ```themis``` modules loads data from the [THEMIS EPO and GBO][3], [CARISMA][1], [CANMOS][4], [AUTUMN and AUTUMN X][5], [DTU][6], [IMAGE][2], [GIMA][7], [MACCS][8], [McMAC][9], [USGS][10], and [PENGUIN][11] arrays. When using the ```themis``` module be sure to properly acknowledge **each** array whose data is used. 
 
-For additional information regarding the stations see [Arrays and Stations][12].
+For additional information regarding the arrays see [Arrays and Stations][12].
 
 ## Installation
 
@@ -61,7 +61,7 @@ The [yearly coordinate files][13] are generated using [Convert_coords.ipynb][15]
 
 ## Loading Data
 
-The load routines in each of the modules will load (rotate if necessary) and download files. Some examples can be found in [notebooks][18] folder. Simple examples are below. The load routines are similar for each array and load data in Pandas DataFrames.
+The load routines in each of the modules will load (rotate if necessary) and download files. Some examples can be found in [notebooks][18] folder. Simple examples are below. The load routines are similar for each array and load data into Pandas DataFrames.
 
 ```python
 #load CARISMA

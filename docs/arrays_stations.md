@@ -1,6 +1,4 @@
-# Some information on the stations and arrays. 
-
-The code will load data from the CARISMA, IMAGE, and THEMIS websites. The THEMIS website is an excellent resource as it has magnetometer data for various stations all stored in a common (fairly common) data format that's a bit easier to load. 
+# Arrays and Stations 
 
 **IMPORTANT NOTES**
 
@@ -14,7 +12,7 @@ Below is a list of the arrays suported by the ```gmag``` code. Additional detail
 
 | Array | Module | Secondary Module |
 |-------|--------|------------------|
-| [CARISMA](#carisma) | carisma | themis|
+| [CARISMA](#carisma) | carisma | themis |
 | [CANMOS](#canmos) | themis | N/A |
 | [AUTUMN and AUTUMN X](#autumn-and-autumn-x)  | themis | N/A |
 | [DTU](#dtu)  | themis | N/A |
