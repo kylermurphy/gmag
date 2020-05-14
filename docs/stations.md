@@ -6,7 +6,7 @@ layout: default
 
 <div class="display compact" style="height:100%; width:140%; font-size:	12px; overflow:auto;">
 
-<table id="catalogue" class="display sortable">
+<table id="catalogue" class="sortable">
 <thead>
 <tr class="header">
 <th style="font-size: 16px">Array</th>
