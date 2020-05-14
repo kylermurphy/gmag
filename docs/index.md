@@ -24,9 +24,12 @@ pip install -e .
 
 The ```gmagrc``` file defines the local directory where magnetoemter data is downloaded.
 
-*   CARISMA files: local_dir\CARISMA\YYYY\MM\DD\station.file
-*   IMAGE files: local_dir\IMAGE\YYYY\MM\array_day.file
-*   THEMIS files: local_dir\THEMIS\site\YYYY\station.file
+- CARISMA files
+  - local_dir\CARISMA\YYYY\MM\DD\station.file
+- IMAGE files
+  - local_dir\IMAGE\YYYY\MM\array_day.file
+- THEMIS files
+  - local_dir\THEMIS\site\YYYY\station.file
 
 The ```carisma``` and ```themis``` modules download a daily file for each station. The ```image``` module downloads a single file including data from multiple stations each day. 
 
