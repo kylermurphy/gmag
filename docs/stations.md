@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# New 2
+# New 3
 
 <div class="display compact" style="height:100%; width:140%; font-size:	12px; overflow:auto;">
 
@@ -45,6 +45,7 @@ layout: default
  
 $(document).ready(function() {
     $("#catalogue").dataTable( {
+        paging: false,
         'data-sort': true,
         order: [[ 0, "desc" ], [3, "desc"]],
         stateSave: true,
