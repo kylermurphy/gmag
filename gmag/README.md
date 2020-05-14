@@ -126,7 +126,7 @@ The Mid‐continent MAgnetoseismic Chain, [McMAC magnetometers](https://agupubs.
 The Time History of Events and Macroscal Interaction During Substorms (THEMIS) Ground Based Observatory (GBO) and Educations and Public Outreach (EPO) [magnetoemters](http://themis.ssl.berkeley.edu/instrument_gmags.shtml).
 
 - [Terms and Conditions](http://themis.ssl.berkeley.edu/roadrules.shtml)
-- [Datd Download](http://themis.ssl.berkeley.edu/data/themis/thg/l2/mag/)
+- [Data Download](http://themis.ssl.berkeley.edu/data/themis/thg/l2/mag/)
 - [Map of Stations](http://themis.ssl.berkeley.edu/instrument_gmags.shtml)
 - Acknowledgement: _"S. Mende and C. T. Russell for use of the GMAG data and NSF for support through grant AGS-1004814."_
 
