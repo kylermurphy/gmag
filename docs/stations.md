@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Stations
+# Stations b
 
 ### Geomagnetic Coordinates
 
@@ -13,9 +13,10 @@ Geomagnetic coordinates by year, mapped to 100 km altitude using IGRF12 and aacg
 
 <div class="display compact" style="height:100%; width:100%; overflow:auto;">
 {% for row in site.data.year %}
-    [{{ row.year }}][./stations/{{ row.year }}.md]
+    <a href='./stations/{{ row.year }}.md'>{{ row.year }} </a>
 {% endfor %}
 </div>
+
 
 ### Map
 
