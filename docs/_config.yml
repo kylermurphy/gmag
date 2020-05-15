@@ -1,6 +1,6 @@
 title: GMAG
 logo: /assets/img/logo.png
-description: Ground-based magnetometer package.
+description: Ground-based magnetometer package
 show_downloads: true
 google_analytics:
 theme: jekyll-theme-minimal
