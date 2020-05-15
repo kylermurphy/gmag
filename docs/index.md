@@ -72,7 +72,8 @@ The load routines in each of the modules will load (rotate if necessary) and dow
 #load CARISMA
 import gmag.carisma as carisma
 df = carisma.load(['ISLL','PINA'],'2012-01-01',ndays=2)
-df = carisma.load(['ISLL','PINA'],'2012-01-01',edate='2012-01-03')
+df = carisma.load(['ISLL','PINA'],
+                  '2012-01-01',edate='2012-01-03')
 
 #load IMAGE
 import gmag.image as image
@@ -80,7 +81,8 @@ df = image.load('AND','2012-01-01',ndays=21)
 
 #load THEMIS, force download even if file exists
 import gmag.themis as themis
-df = themis.load('KUUJ',sdate='2012-01-01',ndays=22, dl=True,force=True)
+df = themis.load('KUUJ',sdate='2012-01-01',
+                  ndays=22, dl=True,force=True)
 ```
 
 
