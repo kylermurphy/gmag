@@ -13,7 +13,7 @@ Geomagnetic coordinates by year, mapped to 100 km altitude using IGRF12 and aacg
 
 
 {% for row in site.data.year %}
-    <a href='./stations/{{ row.year }}.md'>{{ row.year }} </a>
+    [{{ row.year }}][./stations/{{ row.year }}.md]
 {% endfor %}
 
 ### Map
