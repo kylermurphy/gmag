@@ -44,7 +44,7 @@ The [THEMIS website](http://themis.ssl.berkeley.edu) is also an excellent resour
 
 --- 
 
-### CARISMA
+#### CARISMA
 
 The Canadian Array for Realtime Investigations of Magnetic Activity, [CARISMA](http://carisma.ca/), hosted by the University of Alberta.
 
@@ -55,7 +55,7 @@ The Canadian Array for Realtime Investigations of Magnetic Activity, [CARISMA](h
 
 ---
 
-### CANMOS
+#### CANMOS
 
 The Natural Resources Canada Canadian Magnetic Observatory System, [CANMOS](http://geomag.nrcan.gc.ca/obs/canmos-en.php).
 
@@ -66,7 +66,7 @@ The Natural Resources Canada Canadian Magnetic Observatory System, [CANMOS](http
 
 ---
 
-### AUTUMN and AUTUMN X
+#### AUTUMN and AUTUMN X
 
 The Athatbasca University THEMIS UCLA Magnetometer Network, [AUTUMN and AUTUMNX](http://autumn.athabascau.ca/).
 
@@ -75,7 +75,7 @@ The Athatbasca University THEMIS UCLA Magnetometer Network, [AUTUMN and AUTUMNX]
 
 ---
 
-### DTU
+#### DTU
 
 Technical University of Denmark National Space Institute ground based magnetometer array, [DTU](http://www.space.dtu.dk/english/Research/Scientific_data_and_models/Magnetic_Ground_Stations).
 
@@ -86,7 +86,7 @@ Technical University of Denmark National Space Institute ground based magnetomet
 
 ---
 
-### IMAGE
+#### IMAGE
 
 The International Monitor for Auroral Geomagnetic Effects, [IMAGE](http://space.fmi.fi/image/www/index.php?page=home), ground based magnetometer array. Data is provided by multiple institutions, see [IMAGE organization](http://space.fmi.fi/image/www/index.php?page=contributors) for details.
 
@@ -97,7 +97,7 @@ The International Monitor for Auroral Geomagnetic Effects, [IMAGE](http://space.
 
 ---
 
-### GIMA
+#### GIMA
 
 The Geophysical Institute Magnetometer Array, [GIMA](https://www.gi.alaska.edu/monitors/magnetometer) at the University of Alaska Fairbanks.
 
@@ -107,7 +107,7 @@ The Geophysical Institute Magnetometer Array, [GIMA](https://www.gi.alaska.edu/m
 
 ---
 
-### MACCS
+#### MACCS
 
 The Augsburg College Space Physics Magnetometer Array for Cups and Cleft Studies, [MACCS](http://space.augsburg.edu/maccs/index.html)
 
@@ -118,7 +118,7 @@ The Augsburg College Space Physics Magnetometer Array for Cups and Cleft Studies
 
 ---
 
-### McMAC
+#### McMAC
 
 The Mid‐continent MAgnetoseismic Chain, [McMAC magnetometers](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/jgra.50274).
 
@@ -128,7 +128,7 @@ The Mid‐continent MAgnetoseismic Chain, [McMAC magnetometers](https://agupubs.
 
 ---
 
-### THEMIS EPO and GBO
+#### THEMIS EPO and GBO
 
 The Time History of Events and Macroscal Interaction During Substorms (THEMIS) Ground Based Observatory (GBO) and Educations and Public Outreach (EPO) [magnetoemters](http://themis.ssl.berkeley.edu/instrument_gmags.shtml).
 
@@ -139,7 +139,7 @@ The Time History of Events and Macroscal Interaction During Substorms (THEMIS) G
 
 ---
 
-### USGS
+#### USGS
 
 The Unites States Geological Survery, [USGS magnetometers][https://www.usgs.gov/natural-hazards/geomagnetism].
 
@@ -150,7 +150,7 @@ The Unites States Geological Survery, [USGS magnetometers][https://www.usgs.gov/
 
 ---
 
-### PENGUIN
+#### PENGUIN
 
 The Virgina Tech Polar Experimental Network for Geospace Upper atmosphere Investigations, [PENGUIN](http://mist.nianet.org/index.html) Ground Based Observatory.
 
