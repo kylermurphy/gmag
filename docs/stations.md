@@ -6,15 +6,13 @@ layout: default
 
 ### Geomagnetic Coordinates
 
-Geomagnetic coordinates by year, mapped to 100 km altitude using IGRF12 and aacgmv2.
-
-[2000][1] [2001][2] [2002][3] [2004][4] [2004][5] [2005][6] [2006][7] [2007][8] [2008][9] [2009][10] [2010][11] [2011][12] [2012][13] [2013][14] [2014][15] [2015][16] [2016][17] [2017][18] [2018][19] [2019][20] 
-
+Geomagnetic coordinates by year, mapped to 100 km altitude using [IGRF12][1] and [aacgmv2][2].
 
 <div class="display compact" style="height:100%; width:100%; overflow:auto;">
 {% for row in site.data.year %}
     <a href='./stations/{{ row.year }}.md'>{{ row.year }} </a>
 {% endfor %}
+<br>
 </div>
 
 
@@ -73,23 +71,5 @@ $(document).ready(function() {
 </script>
 
 
-[1]: ./stations/2000.md
-[2]: ./stations/2001.md
-[3]: ./stations/2002.md
-[4]: ./stations/2003.md
-[5]: ./stations/2004.md
-[6]: ./stations/2005.md
-[7]: ./stations/2006.md
-[8]: ./stations/2007.md
-[9]: ./stations/2008.md
-[10]: ./stations/2009.md
-[11]: ./stations/2010.md
-[12]: ./stations/2011.md
-[13]: ./stations/2012.md
-[14]: ./stations/2013.md
-[15]: ./stations/2014.md
-[16]: ./stations/2015.md
-[17]: ./stations/2016.md
-[18]: ./stations/2017.md
-[19]: ./stations/2018.md
-[20]: ./stations/2019.md
+[1]: https://github.com/space-physics/igrf12
+[2]: https://github.com/aburrell/aacgmv2
