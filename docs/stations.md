@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Stations c
+# Stations b
 
 ### Geomagnetic Coordinates
 
