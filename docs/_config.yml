@@ -5,4 +5,5 @@ show_downloads: true
 google_analytics:
 theme: jekyll-theme-minimal
 
-arrays: /arrays.md
+arrays: /arrays
+stations: /stations
