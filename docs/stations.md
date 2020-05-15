@@ -4,7 +4,7 @@ layout: default
 
 # Stations
 
-### Geomagnetic Coordinates
+## Geomagnetic Coordinates
 
 Geomagnetic coordinates by year, mapped to 100 km altitude using [IGRF12][1] and [aacgmv2][2].
 
@@ -17,10 +17,10 @@ Geomagnetic coordinates by year, mapped to 100 km altitude using [IGRF12][1] and
 </div>
 
 
-### Map
+## Map
 
 
-### Geographic Coordinates
+## Geographic Coordinates
 
 **Table can be organized by column and is searchable.**
 
