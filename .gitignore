@@ -105,3 +105,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+#ignores for github pages
+_site
+.sass-cache
+Gemfile.lock
+*.gem
