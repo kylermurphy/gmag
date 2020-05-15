@@ -11,10 +11,11 @@ Geomagnetic coordinates by year, mapped to 100 km altitude using IGRF12 and aacg
 [2000][1] [2001][2] [2002][3] [2004][4] [2004][5] [2005][6] [2006][7] [2007][8] [2008][9] [2009][10] [2010][11] [2011][12] [2012][13] [2013][14] [2014][15] [2015][16] [2016][17] [2017][18] [2018][19] [2019][20] 
 
 
-
+<div class="display compact" style="height:100%; width:100%; overflow:auto;">
 {% for row in site.data.year %}
     [{{ row.year }}][./stations/{{ row.year }}.md]
 {% endfor %}
+</div>
 
 ### Map
 
