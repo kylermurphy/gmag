@@ -22,6 +22,8 @@ Geomagnetic coordinates by year, mapped to 100 km altitude using [IGRF12][1] and
 
 ### Geographic Coordinates
 
+**Table can be organized by column and is searchable.**
+
 <div class="display compact" style="height:100%; width:100%; font-size:	12px; overflow:auto;">
 
 <table id="catalogue" class="display">
