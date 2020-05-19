@@ -19,7 +19,7 @@ Geomagnetic coordinates by year, mapped to 100 km altitude using [IGRF12][1] and
 
 ## Map
 
-<iframe src="https://kylermurphy.github.io/gmag/assets/stn_map.html" width="100%" height="300"></iframe>
+<iframe src="https://kylermurphy.github.io/gmag/assets/stn_map.html" width="650" height="400"></iframe>
 
 
 ## Geographic Coordinates
