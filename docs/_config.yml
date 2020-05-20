@@ -2,7 +2,7 @@ title: GMAG
 logo: /assets/img/gmag.jpg
 description: Ground-based magnetometer package
 show_downloads: true
-google_analytics:
+google_analytics: UA-167215090-1
 theme: jekyll-theme-minimal
 
 arrays: /gmag/arrays
