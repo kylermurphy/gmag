@@ -4,13 +4,13 @@ layout: default
 
 # Overview
 
-This code provides the utility to download and load data from various ground-based magtometer arrays into a Pandas DataFrame. The code for is divided into a seperate module for each array. These are the ```carisma```, ```image```, and ```themis``` modules. 
+This code provides the utility to download and load data from various ground-based magnetometer arrays into a Pandas DataFrame. The code is divided into a seperate module for each array. These are the ```carisma```, ```image```, and ```themis``` modules. 
 
 The ```carisma``` module loads data from the [CARISMA][1] magnetometer array.
 
 The ```image``` modules loads data from the [IMAGE][2] magnetometer array.
 
-The ```themis``` modules loads data from the [THEMIS EPO and GBO][3], [CARISMA][1], [CANMOS][4], [AUTUMN and AUTUMN X][5], [DTU][6], [IMAGE][2], [GIMA][7], [MACCS][8], [McMAC][9], [USGS][10], and [PENGUIN][11] arrays. When using the ```themis``` module be sure to properly acknowledge **each** array whose data is used. 
+The ```themis``` modules loads data from the [THEMIS EPO and GBO][3], [CARISMA][1], [CANMOS][4], [AUTUMN and AUTUMN X][5], [DTU][6], [IMAGE][2], [GIMA][7], [MACCS][8], [McMAC][9], [USGS][10], and [PENGUIN][11] arrays. When loading data from the ```themis``` module be sure to properly acknowledge **each** individual array used. 
 
 ## [Arrays][12] 
 
