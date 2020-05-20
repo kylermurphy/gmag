@@ -6,7 +6,7 @@ layout: default
 
 ## Geomagnetic Coordinates
 
-Geomagnetic coordinates by year, mapped to 100 km altitude using [IGRF12][1] and [aacgmv2][2].
+A table of Geomagnetic coordinates for 2000-2019, mapped to 100 km altitude using [IGRF12][1] and [aacgmv2][2] are below.
 
 <div class="display compact" style="height:100%; width:100%; overflow:auto;">
 {% for row in site.data.year %}
