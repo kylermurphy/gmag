@@ -2,7 +2,7 @@
 
 Basic documentation for gmag code. 
 
-Requires: Pandas, NumPy, wget, requests, cdflib heliopy.
+Requires: Pandas, NumPy, wget, requests, cdflib, heliopy.
 
 Installation: ```pip instal -e .```
 
