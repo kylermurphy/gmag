@@ -144,7 +144,7 @@ def download(site=None,
              f_df=None,
              force=False,
              verbose=True):
-    """Download THEMIS magnetometer data from the THEMIS website
+    """Download CARISMA magnetometer data from the CARISMA website
     
     Requires wget to download data.
 
