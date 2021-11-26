@@ -51,7 +51,7 @@ import gmag
 from gmag import utils
 
 
-local_dir = os.path.join(gmag.config_set['data_dir'],'magnetometer','CARISMA')
+local_dir = os.path.join(gmag.config_set['data_dir'],'magnetometer','CANOPUS')
 http_dir = False
 
 # check if local dir exists
@@ -124,9 +124,8 @@ def list_files(site,
         # http directory
         # currently no way to download data
         if http_dir:
-            print('hi')
-            #hdr = http_dir+'FGM/1Hz/'+'{0:04d}'.format(dt.year)+'/'
-            #hdr = hdr+'{0:02d}'.format(dt.month)+'/'+'{0:02d}'.format(dt.day)+'/'
+            hdr = http_dir+'FGM/1Hz/'+'{0:04d}'.format(dt.year)+'/'
+            hdr = hdr+'{0:02d}'.format(dt.month)+'/'+'{0:02d}'.format(dt.day)+'/'
         else: 
             hdr = False
                 
@@ -136,3 +135,213 @@ def list_files(site,
             {'date': dt, 'fname': fnm, 'dir': fdr, 'hdir':hdr}, ignore_index=True)
 
     return f_df
+
+def download(site=None,
+             sdate=None,
+             ndays=1,
+             edate=None,
+             f_df=None,
+             force=False,
+             verbose=True):
+        """
+        No http dir to download files yet
+        """        
+
+def load(site: str = ['GILL'],
+         sdate='1998-01-01',
+         ndays: int = 1,
+         edate=None,
+         gz=True,
+         dl=True,
+         force=False):
+    """Loads CARISMA F01 files and F01.gz files
+    
+    Parameters
+    ----------
+    site : str, optional
+        Site or list of sites to load, by default ['GILL']
+    sdate : str, optional
+        Start day to load, by default '2010-01-01'
+    ndays : int, optional
+        Number of days to load, by default 1
+    edate : str or datetime-like, optional
+        End day to load, by default None
+    gz : bool, optional
+        Load gzip files, by default True
+    dl : bool, optional
+        Download files if they don't exist, by default True
+    force : bool, optional
+        Force downloading files again, by default False
+    
+    Returns
+    -------
+    Pandas DataFrame
+        Cleaned and rotated (if possible) CARISMA magnetometer data
+    """ 
+
+    if type(site) is str:
+        site = [site]
+    if gz:
+        comp = 'gzip'
+    else:
+        comp = 'infer'
+
+    # create empty data frame for data
+    d_df = pd.DataFrame()
+    for stn in site:
+        # get list of file names
+        f_df = list_files(stn.upper(), sdate, ndays=ndays, edate=edate, gz=gz)
+
+        if dl:
+            print('Downloading Data:')
+            download(f_df=f_df,force=force)
+
+        # data frame to store site data
+        s_df = pd.DataFrame()
+        for di, row in f_df.iterrows():
+            print('Loading: '+os.path.join(row['dir'], row['fname']))
+
+            # get file name and check
+            # if it exists
+            fn = os.path.join(row['dir'], row['fname'])
+            if not os.path.exists(fn):
+                print('File does not exist: {0}'.format(fn))
+                continue
+
+            i_df = pd.read_fwf(fn, header=None, skiprows=40,
+                               names=['t',
+                                      stn.upper()+'_X',
+                                      stn.upper()+'_Y',
+                                      stn.upper()+'_Z',
+                                      stn.upper()+'_flag'],
+                               widths=[14, 10, 10, 10, 2],
+                               compression=comp)
+
+            try:
+                i_df['t'] = pd.to_datetime(i_df['t'],
+                                           format='%Y%m%d%H%M%S')
+            except:
+                continue
+            i_df = i_df.set_index('t')
+
+            s_df = s_df.append(i_df)
+
+        # clean data
+        if not s_df.empty:
+            c_df = clean(s_df)
+        else:
+            continue
+        # append files
+        if d_df.empty:
+            d_df = c_df
+        else:
+            d_df = d_df.join(c_df)
+
+    # rotate data into HDZ
+    if d_df.empty:
+        return None
+
+    r_df = rotate(d_df, site, sdate)
+
+    return r_df
+
+
+def clean(i_df):
+    """Remove bad data from CANOPUS DataFrame
+
+    This is a function so that additional utility can
+    be easily added.
+
+    Parameters
+    ----------
+    i_df : DataFrame
+        CANOPUS magnetometer data loaded with CANOPUS.load()
+
+    Returns
+    -------
+    c_df : DataFrame
+        Cleaned CANOPUS magnetometer data
+    """
+    # get a list of column names
+    c_name = list(i_df.columns.values)
+    # find the flag column
+    flag = next((s for s in c_name if 'flag' in s), None)
+    xcom = next((s for s in c_name if '_X' in s), None)
+    ycom = next((s for s in c_name if '_Y' in s), None)
+    zcom = next((s for s in c_name if '_Z' in s), None)
+
+    # find bad data
+    # flag is '.' for good
+    # anything else is bad
+    if flag:
+        i_df.iloc[i_df[flag] != '.', 0:3] = np.nan
+    # z component should always
+    # be positive and less then 99999.992
+    if zcom:
+        i_df.iloc[i_df[zcom] < 0, 0:3] = np.nan
+        i_df.iloc[i_df[zcom] > 99999, 0:3] = np.nan
+    # x and yshould always be less then
+    # 99999.992
+    if xcom:
+        i_df.iloc[i_df[xcom] > 99999, 0:3] = np.nan
+    if ycom:
+        i_df.iloc[i_df[ycom] > 99999, 0:3] = np.nan
+    
+
+    return i_df
+
+def rotate(i_df,
+           site,
+           date):
+    """Rotate XYZ to HDZ for select sites, append
+    to existing DataFrame and return
+
+    Parameters
+    ----------
+    i_df : DataFrame
+        CANOPUS magnetometer data loaded with image.load()
+    site : site to rotate
+        List of sites to rotate
+    date : str or datetime-like
+        Date to load declination for
+
+    Returns
+    -------
+    i_df : DataFrame
+        DataFrame with HD magnetic field coordinates
+        and station cgm coordinates, lshell and 
+        declination
+    """
+    dt = pd.to_datetime(date)
+    # get a list of column names
+    c_name = list(i_df.columns.values)
+
+    for stn in site:
+        stn = stn.upper()
+        if stn+'_X' not in c_name:
+            continue
+
+        stn_dat = utils.load_station_coor(param=stn, year=dt.year)
+        # if the stn_dat can't be found don't rotate
+        if stn_dat is None:
+            return i_df
+        dec = float(stn_dat['declination'])
+
+        h = i_df[stn+'_X'].astype(float) * np.cos(np.deg2rad(dec)) + \
+            i_df[stn+'_Y'].astype(float) * np.sin(np.deg2rad(dec))
+        d = i_df[stn+'_Y'].astype(float) * np.cos(np.deg2rad(dec)) - \
+            i_df[stn+'_X'].astype(float) * np.sin(np.deg2rad(dec))
+
+        i_df[stn+'_H'] = h
+        i_df[stn+'_D'] = d
+
+        # fill in station cooridinat info
+        # this would be better as metadata
+        # but not possible in pandas
+        i_df[stn+'_declination'] = float(stn_dat['declination'])
+        i_df[stn+'_cgmlat'] = float(stn_dat['cgm_latitude'])
+        i_df[stn+'_cgmlon'] = float(stn_dat['cgm_longitude'])
+        i_df[stn+'_lshell'] = float(stn_dat['lshell'])
+        i_df[stn+'_mlt'] = float(stn_dat['mlt_midnight'])
+
+    return i_df
