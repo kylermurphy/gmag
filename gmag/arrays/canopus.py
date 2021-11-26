@@ -134,6 +134,14 @@ def list_files(site,
         f_df = f_df.append(
             {'date': dt, 'fname': fnm, 'dir': fdr, 'hdir':hdr}, ignore_index=True)
 
+    # CANOPUS only goes to 2005-04-01
+    # after this the data transitions to 
+    # CARISMA data
+    # remove rows past this
+    f_df = f_df[f_df['date'] < pd.to_datetime('2005-04-01')]
+
+
+
     return f_df
 
 def download(site=None,

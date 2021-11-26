@@ -15,6 +15,7 @@ Below is a list of the arrays suported by the ```gmag``` code. Additional detail
 | Array | Module | Secondary Module |
 |-------|--------|------------------|
 | [CARISMA](#carisma) | ```carisma``` | ```themis```|
+| [CANOPUS](#carisma) | ```canopus``` | N/A |
 | [CANMOS](#canmos) | ```themis``` | N/A |
 | [AUTUMN and AUTUMN X](#autumn-and-autumn-x)  | ```themis``` | N/A |
 | [DTU](#dtu)  | ```themis``` | N/A |
@@ -40,7 +41,8 @@ The [THEMIS website](http://themis.ssl.berkeley.edu) is also an excellent resour
 
 #### CARISMA
 
-The Canadian Array for Realtime Investigations of Magnetic Activity, [CARISMA](http://carisma.ca/), hosted by the University of Alberta.
+The Canadian Array for Realtime Investigations of Magnetic Activity, [CARISMA (also CANOPUS)](http://carisma.ca/), hosted by the University of Alberta.
+
 
 - [Terms and Conditions of use](http://carisma.ca/carisma-data/data-use-requirements)
 - [Data download](http://carisma.ca/carisma-data-repository)
