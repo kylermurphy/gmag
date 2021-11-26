@@ -162,7 +162,7 @@ def load(site: str = ['GILL'],
          gz=True,
          dl=True,
          force=False):
-    """Loads CARISMA F01 files and F01.gz files
+    """Loads CANOPUS MAG files and MAG.gz files
     
     Parameters
     ----------
@@ -282,18 +282,18 @@ def clean(i_df):
     # flag is '.' for good
     # anything else is bad
     if flag:
-        i_df.iloc[i_df[flag] != '.', 0:3] = np.nan
+        i_df.loc[i_df[flag] != '.', 0:3] = np.nan
     # z component should always
     # be positive and less then 99999.992
     if zcom:
-        i_df.iloc[i_df[zcom] < 0, 0:3] = np.nan
-        i_df.iloc[i_df[zcom] > 99999, 0:3] = np.nan
+        i_df.loc[i_df[zcom] < 0, 0:3] = np.nan
+        i_df.loc[i_df[zcom] > 99999, 0:3] = np.nan
     # x and yshould always be less then
     # 99999.992
     if xcom:
-        i_df.iloc[i_df[xcom] > 99999, 0:3] = np.nan
+        i_df.loc[i_df[xcom] > 99999, 0:3] = np.nan
     if ycom:
-        i_df.iloc[i_df[ycom] > 99999, 0:3] = np.nan
+        i_df.loc[i_df[ycom] > 99999, 0:3] = np.nan
     
 
     return i_df
