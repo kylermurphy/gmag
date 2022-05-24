@@ -141,7 +141,7 @@ The Time History of Events and Macroscal Interaction During Substorms (THEMIS) G
 
 #### USGS
 
-The Unites States Geological Survery, [USGS magnetometers][https://www.usgs.gov/natural-hazards/geomagnetism].
+The Unites States Geological Survery, [USGS magnetometers](https://www.usgs.gov/natural-hazards/geomagnetism]).
 
 - [Terms and Conditions](https://www.usgs.gov/natural-hazards/geomagnetism/science/download-data?qt-science_center_objects=0#qt-science_center_objects)
 - [Data Download](https://www.usgs.gov/natural-hazards/geomagnetism/science/web-service-0?qt-science_center_objects=0#qt-science_center_objects)
