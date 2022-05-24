@@ -6,7 +6,7 @@ This module supports data from the THEMIS magnetometer array. Downloads data fro
 Loads XYZ data and rotates into HDZ.
 
 Directory structure is assumed
-local_dir\\YYYY\\site\\file
+local_dir\\magnetometer\\THEMIS\\YYYY\\site\\file
 
 local_dir is set in gmagrc
 
@@ -84,7 +84,7 @@ def list_files(site,
      Used to generate a list of files for either downloading or loading
 
      Directory structure is assumed
-     local_dir\\YYYY\\site\\filename
+     local_dir\\magnetometer\\THEMIS\\YYYY\\site\\file
 
     Parameters
     ----------

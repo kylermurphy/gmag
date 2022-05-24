@@ -7,7 +7,7 @@ Loads XYZ data and rotates into HDZ. Will load data downloaded from IMAGE websit
 as well as THEMIS CDF files.
 
 Directory structure is assumed:
-local_dir\\YYYY\\MM\\file
+local_dir\\magnetometer\\IMAGE\\YYYY\\MM\\file
 
 local_dir is set in gmagrc
 
@@ -87,7 +87,7 @@ def list_files(sdate,
     files are all compressed.
 
     Directory structure is assumed:
-    local_dir\\YYYY\\MM\\filename
+    local_dir\\magnetometer\\IMAGE\\YYYY\\MM\\file
 
     Parameters
     ----------

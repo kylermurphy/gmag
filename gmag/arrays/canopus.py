@@ -3,7 +3,7 @@
 This module supports data from the CANOPUS (now CARISMA) magnetometer array.
 
 Directory structure is assumed
-local_dir\\YYYY\\MM\\SITE\\file
+local_dir\\magnetometer\\CANOPUS\\YYYY\\MM\\SITE\\file
 
 local_dir is set in gmagrc
 
@@ -72,7 +72,7 @@ def list_files(site,
      Used to generate a list of files for either downloading or loading
 
      Directory structure is assumed
-     local_dir\\YYYY\\MM\\SITE\\filename
+     local_dir\\magnetometer\\CANOPUS\\YYYY\\MM\\SITE\\file
 
     Parameters
     ----------

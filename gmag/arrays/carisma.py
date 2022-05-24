@@ -5,7 +5,7 @@ This module supports data from the CARISMA magnetometer array. Downloads data fr
 Loads XYZ data and rotates into HDZ. Will load data downloaded from the CARISMA website.
 
 Directory structure is assumed
-local_dir\\YYYY\\MM\\DD\\file
+local_dir\\magnetometer\\CARISMA\\YYYY\\MM\\DD\\file
 
 local_dir is set in gmagrc
 
@@ -76,7 +76,7 @@ def list_files(site,
      Used to generate a list of files for either downloading or loading
 
      Directory structure is assumed
-     local_dir\\YYYY\\MM\\DD\\filename
+     local_dir\\magnetometer\\CARISMA\\YYYY\\MM\\DD\\file
 
     Parameters
     ----------
