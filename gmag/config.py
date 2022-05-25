@@ -71,7 +71,7 @@ def load_config():
     if configf['DEFAULT']['ca_http']:
         config_dic['ca_http'] = configf['DEFAULT']['ca_http']
     else:
-        config_dic['uinstitute'] = None
+        config_dic['ca_http'] = None
     # IMAGE download address
     if configf['DEFAULT']['im_http']:
         config_dic['im_http'] = configf['DEFAULT']['im_http']
