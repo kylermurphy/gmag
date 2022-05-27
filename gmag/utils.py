@@ -6,7 +6,6 @@ Simple set of utilites for reading in array locations
 
 import pandas as pd
 import numpy as np
-import scipy.signal as signal
 import os
 
 import gmag
