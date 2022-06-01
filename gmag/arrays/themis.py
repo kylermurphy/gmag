@@ -63,7 +63,7 @@ import gmag
 from gmag import utils
 from urllib.parse import urljoin
 
-local_dir = os.path.join(gmag.config_set['data_dir'],'magnetometer','THEMIS')
+local_dir = os.path.join(gmag.config_set['data_dir'], 'magnetometer', 'THEMIS')
 http_dir = gmag.config_set['th_http']
 
 # check if local dir exists
@@ -111,7 +111,7 @@ def list_files(site,
         d_ser = pd.Series(pd.date_range(
             start=sdate, periods=ndays, freq='D'))
 
-    f_df = pd.DataFrame(columns=['date', 'fname', 'dir','hdir'])
+    f_df = pd.DataFrame(columns=['date', 'fname', 'dir', 'hdir'])
 
     # create file name and directory structure
     for di, dt in d_ser.iteritems():
@@ -119,7 +119,6 @@ def list_files(site,
         fnm = '{0:04d}{1:02d}{2:02d}'.format(
             dt.year, dt.month, dt.day)
         fnm = 'thg_l2_mag_'+site.lower()+'_'+fnm+'_v01.cdf'
-
 
         # directory location
         # THEMIS data is store in local_dir as YYYY\MM\DD\themis_file
@@ -133,7 +132,7 @@ def list_files(site,
         hdr = http_dir+'thg/l2/mag/'+site.lower()+'/{0:04d}/'.format(dt.year)
 
         f_df = f_df.append(
-            {'date': dt, 'fname': fnm, 'dir': fdr, 'hdir':hdr}, ignore_index=True)
+            {'date': dt, 'fname': fnm, 'dir': fdr, 'hdir': hdr}, ignore_index=True)
 
     return f_df
 
@@ -146,7 +145,7 @@ def download(site=None,
              force=False,
              verbose=True):
     """Download THEMIS magnetometer data from the THEMIS website
-    
+
     Requires wget to download data.
 
     Parameters
@@ -168,8 +167,8 @@ def download(site=None,
     """
 
     # get file names
-    if f_df is None: 
-        f_df = list_files(site, sdate, ndays=ndays, edate=edate)   
+    if f_df is None:
+        f_df = list_files(site, sdate, ndays=ndays, edate=edate)
     # download files
     for di, row in f_df.iterrows():
         # get file name and check
@@ -177,16 +176,17 @@ def download(site=None,
         fn = os.path.join(row['dir'], row['fname'])
         if not os.path.exists(fn) or force:
             # if forcing download and file
-            #exists remove file before
-            #redownloading
+            # exists remove file before
+            # redownloading
             if os.path.exists(fn):
                 os.remove(fn)
-            try: 
-                wget.download(row['hdir']+row['fname'],out=row['dir'])
+            try:
+                wget.download(row['hdir']+row['fname'], out=row['dir'])
             except:
                 print('HTTP file not found {0}'.format(row['fname']))
         elif verbose:
-            print('File {0} exists use force=True to download'.format(row['fname']))         
+            print('File {0} exists use force=True to download'.format(
+                row['fname']))
 
 
 def load(site: str = ['KUUJ'],
@@ -196,7 +196,7 @@ def load(site: str = ['KUUJ'],
          dl=True,
          force=False):
     """Load THEMIS CDF files.
-    
+
     Parameters
     ----------
     site : str, optional
@@ -211,7 +211,7 @@ def load(site: str = ['KUUJ'],
         Download data before loading, by default True
     force : bool, optional
         Force download if already exists, by default False
-    
+
     Returns
     -------
     Pandas DataFrame
@@ -230,7 +230,6 @@ def load(site: str = ['KUUJ'],
             print('Downloading Data:')
             download(f_df=f_df, force=force)
 
-
         for di, row in f_df.iterrows():
             print('Loading: '+os.path.join(row['dir'], row['fname']))
 
@@ -245,19 +244,16 @@ def load(site: str = ['KUUJ'],
             cdf_file = cdflib.CDF(fn)
             dat = cdf_file.varget('thg_mag_'+stn.lower())
             col = cdf_file.varget('thg_mag_'+stn.lower()+'_labl')
-            td  = cdf_file.varget('thg_mag_'+stn.lower()+'_time')
+            t = pd.to_datetime(cdf_file.varget(
+                'thg_mag_'+stn.lower()+'_time'), unit='s')
+
             cdf_file.close()
-            t   = pd.to_datetime(cdf_file.varget('thg_mag_'+stn.lower()+'_time'),unit='s')          
-            
-            # create data frame 
-            i_df = pd.DataFrame(data=dat,columns=[stn.upper()+' '+x for x in col])
+            # create data frame
+            i_df = pd.DataFrame(data=dat, columns=[
+                                stn.upper()+'_'+x[0].strip()[-1] for x in col])
             i_df['t'] = t
             i_df = i_df.set_index('t')
-            # append to returned data frame    
+            # append to returned data frame
             d_df = d_df.append(i_df)
-           
 
     return d_df
-
-
-

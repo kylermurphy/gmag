@@ -51,7 +51,8 @@ import gmag
 from gmag import utils
 
 
-local_dir = os.path.join(gmag.config_set['data_dir'],'magnetometer','CANOPUS')
+local_dir = os.path.join(
+    gmag.config_set['data_dir'], 'magnetometer', 'CANOPUS')
 http_dir = False
 
 # check if local dir exists
@@ -60,6 +61,7 @@ if not os.path.exists(local_dir):
         os.makedirs(local_dir)
     except FileNotFoundError:
         print('Local CANOPUS Drive does not exist')
+
 
 def list_files(site,
                sdate,
@@ -125,24 +127,22 @@ def list_files(site,
         # currently no way to download data
         if http_dir:
             hdr = http_dir+'FGM/1Hz/'+'{0:04d}'.format(dt.year)+'/'
-            hdr = hdr+'{0:02d}'.format(dt.month)+'/'+'{0:02d}'.format(dt.day)+'/'
-        else: 
+            hdr = hdr+'{0:02d}'.format(dt.month) + \
+                '/'+'{0:02d}'.format(dt.day)+'/'
+        else:
             hdr = False
-                
-
 
         f_df = f_df.append(
-            {'date': dt, 'fname': fnm, 'dir': fdr, 'hdir':hdr}, ignore_index=True)
+            {'date': dt, 'fname': fnm, 'dir': fdr, 'hdir': hdr}, ignore_index=True)
 
     # CANOPUS only goes to 2005-04-01
-    # after this the data transitions to 
+    # after this the data transitions to
     # CARISMA data
     # remove rows past this
     f_df = f_df[f_df['date'] < pd.to_datetime('2005-04-01')]
 
-
-
     return f_df
+
 
 def download(site=None,
              sdate=None,
@@ -151,9 +151,10 @@ def download(site=None,
              f_df=None,
              force=False,
              verbose=True):
-        """
-        No http dir to download files yet
-        """        
+    """
+    No http dir to download files yet
+    """
+
 
 def load(site: str = ['GILL'],
          sdate='1998-01-01',
@@ -163,7 +164,7 @@ def load(site: str = ['GILL'],
          dl=True,
          force=False):
     """Loads CANOPUS MAG files and MAG.gz files
-    
+
     Parameters
     ----------
     site : str, optional
@@ -180,12 +181,12 @@ def load(site: str = ['GILL'],
         Download files if they don't exist, by default True
     force : bool, optional
         Force downloading files again, by default False
-    
+
     Returns
     -------
     Pandas DataFrame
         Cleaned and rotated (if possible) CARISMA magnetometer data
-    """ 
+    """
 
     if type(site) is str:
         site = [site]
@@ -202,7 +203,7 @@ def load(site: str = ['GILL'],
 
         if dl:
             print('Downloading Data:')
-            download(f_df=f_df,force=force)
+            download(f_df=f_df, force=force)
 
         # data frame to store site data
         s_df = pd.DataFrame()
@@ -294,9 +295,9 @@ def clean(i_df):
         i_df.loc[i_df[xcom] > 99999, 0:3] = np.nan
     if ycom:
         i_df.loc[i_df[ycom] > 99999, 0:3] = np.nan
-    
 
     return i_df
+
 
 def rotate(i_df,
            site,
