@@ -33,7 +33,8 @@ def load_station_coor(
         year: int = 2000,
         col: str = 'code',
         path=False):
-    """Returns cooridinate information for station data located in the Stations folder.
+    """
+    Returns cooridinate information for station data located in the Stations folder.
         Values returned are geographic and geomagnetic latitude and longitude, declination,
         l-shell (dipole), mlt of magnetic midnight (UT), mlt at 0 UT, and year.
 
@@ -61,8 +62,49 @@ def load_station_coor(
     # read in station data
     stn_dat = pd.read_csv(fn)
 
-    stn_dat = stn_dat[stn_dat[col.lower()] == param.upper()
-                      ].reset_index(drop=True)
+    if param.upper() != 'ALL' and param != '*':
+        stn_dat = stn_dat[stn_dat[col.lower()] == param.upper()
+                        ].reset_index(drop=True)
+
+    
     stn_dat['year'] = year
+
+    return stn_dat
+
+def load_station_geo(
+        param: str = 'GILL',
+        col: str = 'code',
+        path=False):
+
+    """
+    Returns geographic cooridinate information for station data located in the Stations folder
+
+    Parameters
+    ----------
+    param : str, optional
+        [description], by default 'GILL'
+    year : int, optional
+        [description], by default 'code'
+    path : str, optional
+        [description], by default Stations directory of main folder'
+    """
+
+    if not path:
+        path = os.path.join(os.path.dirname(
+            os.path.abspath(__file__)), 'Stations')
+
+    # station file
+    fn = os.path.join(path, 'station_list.csv')
+
+    if not os.path.exists(fn):
+        return None
+
+    # read in station data
+    stn_dat = pd.read_csv(fn, header=None, skiprows=1, 
+                     names = ['array','code','name','latitude','longitude'])
+
+    if param.upper() != 'ALL' and param != '*':
+        stn_dat = stn_dat[stn_dat[col.lower()] == param.upper()
+                        ].reset_index(drop=True)
 
     return stn_dat
