@@ -184,7 +184,7 @@ def load(site: str = ['GILL'],
     Returns
     -------
     Pandas DataFrame
-        Cleaned and rotated (if possible) CARISMA magnetometer data
+        Cleaned and rotated (if possible) CANOPUS magnetometer data and metadata
     """
 
     if type(site) is str:
