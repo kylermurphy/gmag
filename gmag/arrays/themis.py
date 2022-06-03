@@ -215,17 +215,27 @@ def load(site: str = ['KUUJ'],
     Returns
     -------
     Pandas DataFrame
-        THEMIS magnetometer data
+        THEMIS magnetometer data and station metadata
     """
     if type(site) is str:
         site = [site]
+
+    meta_df = pd.DataFrame(columns=['array', 'code', 'name', 'latitude', 'longitude', 'cgm_latitude',
+       'cgm_longitude', 'declination', 'lshell', 'mlt_midnight', 'mlt_ut',
+       'year','Time Resolution','Coordinates','PI','Institution'])
+
+    stn_vals = utils.load_station_coor(param='ALL', year=pd.to_datetime(sdate).year)
+    if stn_vals is None:
+        stn_vals = utils.load_station_geo(param='ALL')
 
     # create empty data frame for data
     d_df = pd.DataFrame()
     for stn in site:
         # get list of file names
         f_df = list_files(stn.upper(), sdate, ndays=ndays, edate=edate)
-
+        
+        # station dataframe for data
+        s_df = pd.DataFrame()
         if dl:
             print('Downloading Data:')
             download(f_df=f_df, force=force)
@@ -243,17 +253,42 @@ def load(site: str = ['KUUJ'],
             # open cdf file and get data
             cdf_file = cdflib.CDF(fn)
             dat = cdf_file.varget('thg_mag_'+stn.lower())
-            col = cdf_file.varget('thg_mag_'+stn.lower()+'_labl')
+            cdf_col = cdf_file.varget('thg_mag_'+stn.lower()+'_labl')
             t = pd.to_datetime(cdf_file.varget(
                 'thg_mag_'+stn.lower()+'_time'), unit='s')
+            pi = cdf_file.attget('PI_name',0)['Data']
+            pi_i = cdf_file.attget('PI_affiliation',0)['Data']
+            res = float(cdf_file.attget('Time_resolution',0)['Data'][0:-1])
 
             cdf_file.close()
             # create data frame
-            i_df = pd.DataFrame(data=dat, columns=[
-                                stn.upper()+'_'+x[0].strip()[-1] for x in col])
+            test_col = ['Magnetic North', 'Magnetic East', 'Vertical Down']
+            lab_col = ['H','D','Z']
+
+            print([c_col.replace(',','-').split('-')[0].strip() for c_col in cdf_col])
+
+            columns=[(stn.upper()+'_'+l_col if c_col.replace(',','-').split('-')[0].strip() == t_col \
+                    else stn.upper()+'_'+c_col.strip()) \
+                    for c_col,t_col,l_col in zip(cdf_col,test_col,lab_col)]
+            i_df = pd.DataFrame(data=dat, columns=columns)
             i_df['t'] = t
             i_df = i_df.set_index('t')
             # append to returned data frame
-            d_df = d_df.append(i_df)
+            s_df = s_df.append(i_df, sort=False)
 
-    return d_df
+        if d_df.empty:
+            d_df = s_df
+        else:
+            d_df = d_df.join(s_df,how='outer')
+
+
+        stn_dat = stn_vals[stn_vals['code'] == stn.upper()].reset_index(drop=True)
+        stn_dat['Time Resolution'] = res
+        stn_dat['Coordinates'] = ', '.join(cdf_col).strip()
+        stn_dat['PI'] = pi
+        stn_dat['Institution'] = pi_i
+        
+
+        meta_df = pd.concat([meta_df,stn_dat], axis=0, sort=False, ignore_index=True)
+
+    return d_df, meta_df
