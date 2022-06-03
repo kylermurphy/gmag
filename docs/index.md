@@ -4,9 +4,11 @@ layout: default
 
 # Overview
 
-This code provides the utility to download and load data from various ground-based magnetometer arrays into a Pandas DataFrame. The code is divided into a seperate module for each array. These are the ```carisma```, ```image```, and ```themis``` modules. 
+This code provides the utility to **download and load data** from various ground-based magnetometer arrays into a Pandas DataFrame. The code also return **metadata** for the loaded stations. The code is divided into a seperate module for each array. These are the ```carisma```, ```canopus```, ```image```, and ```themis``` modules. 
 
 The ```carisma``` module loads data from the [CARISMA][1] magnetometer array.
+
+The ```canopus``` module loads data from the legacy [CANOPUS][1] magnetometer array pre 1 April 2005. The data must be downloaded from the [CARISMA][1] website and cannot be downloaded using the module.
 
 The ```image``` modules loads data from the [IMAGE][2] magnetometer array.
 
@@ -32,6 +34,8 @@ The ```gmagrc``` file defines the local directory where magnetoemter data is dow
 
 - CARISMA files
   - local_dir\CARISMA\YYYY\MM\DD\station.file
+- CANOPUS files
+  - local_dir\CANOPUS\YYYY\MM\DD\station.file
 - IMAGE files
   - local_dir\IMAGE\YYYY\MM\array_day.file
 - THEMIS files
@@ -53,6 +57,7 @@ The ```util``` module will load station coordinates from text files in ./gmag/St
 
 ```python
 from gmag import utils
+#load geomagnetic data
 #load all CARISMA station data for 2002
 car_stn = utils.load_station_coor(
   param='CARISMA',col='array',year=2002)
@@ -60,6 +65,16 @@ car_stn = utils.load_station_coor(
 #load GILL data from 2012
 gill_stn = utils.load_station_coor(
   param='GILL',col='code',year=2012)
+
+#load all data from 2012
+all_stn = utils.load_station_coor(param='ALL',year=2012)
+
+#load station geographic data
+#load all CARISMA data
+geo_stn = utils.load_station_geo(param='CARISMA',col='array')
+
+#load all stations
+all_stn = utils.load_station_geo(param='ALL')
 ```
 
 The [yearly coordinate files][13] are generated using [Convert_coords.ipynb][15] which requires the [IGRF][16] and [aacgmv2][17] modules which can be difficult to install. For simplicity, the coordinate files are pre-generated and will updated when possible.
@@ -71,18 +86,22 @@ The load routines in each of the modules will load (rotate if necessary) and dow
 ```python
 #load CARISMA
 import gmag.arrays.carisma as carisma
-df = carisma.load(['ISLL','PINA'],'2012-01-01',ndays=2)
-df = carisma.load(['ISLL','PINA'],
+df, meta = carisma.load(['ISLL','PINA'],'2012-01-01',ndays=2)
+df, meta = carisma.load(['ISLL','PINA'],
                   '2012-01-01',edate='2012-01-03')
 
 #load IMAGE
 import gmag.arrays.image as image
-df = image.load('AND','2012-01-01',ndays=21)
+df, meta = image.load('AND','2012-01-01',ndays=21)
 
 #load THEMIS, force download even if file exists
 import gmag.arrays.themis as themis
-df = themis.load('KUUJ',sdate='2012-01-01',
+df, meta = themis.load('KUUJ',sdate='2012-01-01',
                   ndays=22, dl=True,force=True)
+
+#load CANOPUS
+import gmag.arrays.canopus as canopus
+df, meta = canopus.load('ISLL',sdate='2001-01-01',ndays=1)                  
 ```
 
 
