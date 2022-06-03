@@ -284,6 +284,17 @@ def load(site: str = ['GILL'],
 
     r_df, meta_df = rotate(d_df, site, sdate)
 
+    #get the nominal resolution of the dataframe
+    res = (pd.Series(i_df.index[1:]) -
+               pd.Series(i_df.index[:-1])).value_counts()
+    res = res.index[0].total_seconds()
+
+    #add PI to metadata
+    meta_df['Time Resolution'] = res 
+    meta_df['PI'] = pi
+    meta_df['Institution'] = pi_i   
+    
+
     return r_df, meta_df
 
 
@@ -349,11 +360,6 @@ def rotate(i_df,
     # get a list of column names
     c_name = list(i_df.columns.values)
 
-    #get the nominal resolution of the dataframe
-    res = (pd.Series(i_df.index[1:]) -
-               pd.Series(i_df.index[:-1])).value_counts()
-    res = res.index[0].total_seconds()
-
     #create dataframe for metadata
     meta = pd.DataFrame(columns=['array', 'code', 'name', 'latitude', 'longitude', 'cgm_latitude',
        'cgm_longitude', 'declination', 'lshell', 'mlt_midnight', 'mlt_ut',
@@ -369,10 +375,6 @@ def rotate(i_df,
             stn_dat = geo_stn[geo_stn['code'] == stn.upper()].reset_index(drop=True)
             meta = pd.concat([meta,stn_dat], axis=0, sort=False, ignore_index=True)
 
-        #add PI to metadata
-        meta['PI'] = pi
-        meta['Institution'] = pi_i   
-        meta['Time Resolution'] = res 
         return i_df, meta
 
     for stn in site:
@@ -395,9 +397,6 @@ def rotate(i_df,
         # add meta data to data frame
         meta = pd.concat([meta,stn_dat], axis=0, sort=False, ignore_index=True)
 
-    # PI to meta data
-    meta['PI'] = pi
-    meta['Institution'] = pi_i
-    meta['Time Resolution'] = res
+
     return i_df, meta
 
