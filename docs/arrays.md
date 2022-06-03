@@ -9,7 +9,7 @@ layout: default
 ## IMPORTANT NOTES
 
 1. THEMISis an excellent resourcee for the ground-based magnetometer arrays loaded by ```gmag```. However, data downloaded from the THEMIS data server are not necessarily  THEMIS magnetometers. Please appropriately reference and acknowledge each array whose data you use;  acknowledgements and reference for the arrays (when available) can be found below.
-2. The data from the THEMIS data server are generally in geomagnetic cooridinates, though this is not a given. To overcome this the returned Pandas DataFrame stores data labels from the CDF for data loaded using the ```themis``` module. These labels will specify the coordinate system of the loaded data.
+2. The data from the THEMIS data server are generally in geomagnetic cooridinates, though this is not a given. To overcome this the returned metadata Pandas DataFrame stores data labels from the CDF for data loaded using the ```themis``` module. These labels will specify the coordinate system of the loaded data.
 3. CARISMA and IMAGE data loaded using the ```carisma``` and ```image``` modules are roated from XYZ to HDZ. 
 
 ## Arrays
@@ -21,6 +21,7 @@ Information on individual stations can be found [here][1].
 | Array | Module | Secondary Module |
 |-------|--------|------------------|
 | [CARISMA](#carisma) | ```carisma``` | ```themis```|
+| [CANOPUS](#carisma) | ```canopus``` | N/A |
 | [CANMOS](#canmos) | ```themis``` | N/A |
 | [AUTUMN and AUTUMN X](#autumn-and-autumn-x)  | ```themis``` | N/A |
 | [DTU](#dtu)  | ```themis``` | N/A |
@@ -44,9 +45,9 @@ The [THEMIS website](http://themis.ssl.berkeley.edu) is also an excellent resour
 
 --- 
 
-#### CARISMA
+#### CARISMA/CANOPUS
 
-The Canadian Array for Realtime Investigations of Magnetic Activity, [CARISMA](http://carisma.ca/), hosted by the University of Alberta.
+The Canadian Array for Realtime Investigations of Magnetic Activity, [CARISMA](http://carisma.ca/), hosted by the University of Alberta. Formerly the e Canadian Auroral Network for the OPEN Program Unified Study (CANOPUS, pre 1 April 2005).
 
 - [Terms and Conditions of use](http://carisma.ca/carisma-data/data-use-requirements)
 - [Data download](http://carisma.ca/carisma-data-repository)
