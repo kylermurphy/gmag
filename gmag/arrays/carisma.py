@@ -13,7 +13,7 @@ Example
 -------
 
 Load and download data from multiple stations
-df = carisma.load(site=['GILL','ISLL','PINA'],sdate='2012-01-01',ndays=1)
+dat, meta = carisma.load(site=['GILL','ISLL','PINA'],sdate='2012-01-01',ndays=1)
 
 You can download data a site at time with carisma.download, though its
 easier to use carisma.load as it will loop through stations
@@ -56,6 +56,8 @@ from gmag import utils
 
 local_dir = os.path.join(gmag.config_set['data_dir'],'magnetometer','CARISMA')
 http_dir = gmag.config_set['ca_http']
+pi = 'Ian Mann'
+pi_i = 'University of Alberta'
 
 # check if local dir exists
 if not os.path.exists(local_dir):
@@ -217,7 +219,7 @@ def load(site: str = ['GILL'],
     Returns
     -------
     Pandas DataFrame
-        Cleaned and rotated (if possible) CARISMA magnetometer data
+        Cleaned and rotated (if possible) CARISMA magnetometer data and station metadata
     """
     if type(site) is str:
         site = [site]
@@ -280,9 +282,9 @@ def load(site: str = ['GILL'],
     if d_df.empty:
         return None
 
-    r_df = rotate(d_df, site, sdate)
+    r_df, meta_df = rotate(d_df, site, sdate)
 
-    return r_df
+    return r_df, meta_df
 
 
 def clean(i_df):
@@ -340,20 +342,45 @@ def rotate(i_df,
         DataFrame with HD magnetic field coordinates
         and station cgm coordinates, lshell and 
         declination
+    meta : DataFrame
+        Metadata for stations loaded
     """
     dt = pd.to_datetime(date)
     # get a list of column names
     c_name = list(i_df.columns.values)
+
+    #get the nominal resolution of the dataframe
+    res = (pd.Series(i_df.index[1:]) -
+               pd.Series(i_df.index[:-1])).value_counts()
+    res = res.index[0].total_seconds()
+
+    #create dataframe for metadata
+    meta = pd.DataFrame(columns=['array', 'code', 'name', 'latitude', 'longitude', 'cgm_latitude',
+       'cgm_longitude', 'declination', 'lshell', 'mlt_midnight', 'mlt_ut',
+       'year'])
+
+    #get station data for CARISMA array
+    stn_cgm = utils.load_station_coor(param='CARISMA',col='array', year=dt.year)   
+    # if the stn_dat can't be found don't rotate
+    # but still return meta data
+    if stn_cgm is None:
+        geo_stn = utils.load_station_geo(param='CARISMA',col='array')
+        for stn in site:
+            stn_dat = geo_stn[geo_stn['code'] == stn.upper()].reset_index(drop=True)
+            meta = pd.concat([meta,stn_dat], axis=0, sort=False, ignore_index=True)
+
+        #add PI to metadata
+        meta['PI'] = pi
+        meta['Institution'] = pi_i   
+        meta['Time Resolution'] = res 
+        return i_df, meta
 
     for stn in site:
         stn = stn.upper()
         if stn+'_X' not in c_name:
             continue
 
-        stn_dat = utils.load_station_coor(param=stn, year=dt.year)
-        # if the stn_dat can't be found don't rotate
-        if stn_dat is None:
-            return i_df
+        stn_dat = stn_cgm[stn_cgm['code'] == stn].reset_index(drop=True)
         dec = float(stn_dat['declination'])
 
         h = i_df[stn+'_X'].astype(float) * np.cos(np.deg2rad(dec)) + \
@@ -361,17 +388,16 @@ def rotate(i_df,
         d = i_df[stn+'_Y'].astype(float) * np.cos(np.deg2rad(dec)) - \
             i_df[stn+'_X'].astype(float) * np.sin(np.deg2rad(dec))
 
+        # add H and D data to data frame    
         i_df[stn+'_H'] = h
         i_df[stn+'_D'] = d
 
-        # fill in station cooridinat info
-        # this would be better as metadata
-        # but not possible in pandas
-        i_df[stn+'_declination'] = float(stn_dat['declination'])
-        i_df[stn+'_cgmlat'] = float(stn_dat['cgm_latitude'])
-        i_df[stn+'_cgmlon'] = float(stn_dat['cgm_longitude'])
-        i_df[stn+'_lshell'] = float(stn_dat['lshell'])
-        i_df[stn+'_mlt'] = float(stn_dat['mlt_midnight'])
+        # add meta data to data frame
+        meta = pd.concat([meta,stn_dat], axis=0, sort=False, ignore_index=True)
 
-    return i_df
+    # PI to meta data
+    meta['PI'] = pi
+    meta['Institution'] = pi_i
+    meta['Time Resolution'] = res
+    return i_df, meta
 
