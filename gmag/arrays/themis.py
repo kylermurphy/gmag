@@ -265,8 +265,6 @@ def load(site: str = ['KUUJ'],
             test_col = ['Magnetic North', 'Magnetic East', 'Vertical Down']
             lab_col = ['H','D','Z']
 
-            print([c_col.replace(',','-').split('-')[0].strip() for c_col in cdf_col])
-
             columns=[(stn.upper()+'_'+l_col if c_col.replace(',','-').split('-')[0].strip() == t_col \
                     else stn.upper()+'_'+c_col.strip()) \
                     for c_col,t_col,l_col in zip(cdf_col,test_col,lab_col)]

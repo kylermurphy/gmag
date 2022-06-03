@@ -196,6 +196,7 @@ def load(site: str = ['GILL'],
          edate=None,
          gz=True,
          dl=True,
+         drop_flag=True,
          force=False):
     """Loads CARISMA F01 files and F01.gz files
     
@@ -213,6 +214,8 @@ def load(site: str = ['GILL'],
         Load gzip files, by default True
     dl : bool, optional
         Download files if they don't exist, by default True
+    drop_flag : bool, optional
+        Drop flag columns before returning DataFrame    
     force : bool, optional
         Force downloading files again, by default False
     
@@ -295,6 +298,9 @@ def load(site: str = ['GILL'],
     meta_df['PI'] = pi
     meta_df['Institution'] = pi_i   
     
+    #drop flag column
+    if drop_flag: 
+        r_df = r_df[r_df.columns.drop(list(r_df.filter(regex='flag')))]
 
     return r_df, meta_df
 

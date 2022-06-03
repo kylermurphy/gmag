@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 
 This module supports data from the CANOPUS (now CARISMA) magnetometer array.
@@ -13,17 +14,10 @@ Example
 Load data from multiple stations
 df = canopus.load(site=['GILL','ISLL','PINA'],sdate='2012-01-01',ndays=1)
 
-You can download data a site at time with xxxx.download, though its
-easier to use xxxx.load as it will loop through stations
-
-
 Attributes
 ----------
 local_dir : str
     Directory for CANOPUS data. This directory will be used to download and load CANOPUS files.
-http_dir : str
-    Web address for CANOPUS data. This points to the website of CANOPUS data.
-
 
 Notes
 -----
@@ -54,6 +48,8 @@ from gmag import utils
 local_dir = os.path.join(
     gmag.config_set['data_dir'], 'magnetometer', 'CANOPUS')
 http_dir = False
+pi = 'Ian Mann'
+pi_i = 'University of Alberta'
 
 # check if local dir exists
 if not os.path.exists(local_dir):
@@ -162,6 +158,7 @@ def load(site: str = ['GILL'],
          edate=None,
          gz=True,
          dl=True,
+         drop_flag=True,
          force=False):
     """Loads CANOPUS MAG files and MAG.gz files
 
@@ -179,6 +176,8 @@ def load(site: str = ['GILL'],
         Load gzip files, by default True
     dl : bool, optional
         Download files if they don't exist, by default True
+    drop_flag : bool, optional
+        Drop flag columns before returning DataFrame
     force : bool, optional
         Force downloading files again, by default False
 
@@ -250,9 +249,24 @@ def load(site: str = ['GILL'],
     if d_df.empty:
         return None
 
-    r_df = rotate(d_df, site, sdate)
+    r_df, meta_df = rotate(d_df, site, sdate)
 
-    return r_df
+    #get the nominal resolution of the dataframe
+    res = (pd.Series(r_df.index[1:]) -
+               pd.Series(r_df.index[:-1])).value_counts()
+    res = res.index[0].total_seconds()
+
+    #add PI to metadata
+    meta_df['Time Resolution'] = res 
+    meta_df['Coordinates'] = 'Geographic North - X, Eas - Y, Vertical Down - Z, Geomagnetic North - H, East- D, Vertical Down - Z'
+    meta_df['PI'] = pi
+    meta_df['Institution'] = pi_i
+
+    #drop flag column
+    if drop_flag: 
+        r_df = r_df[r_df.columns.drop(list(r_df.filter(regex='flag')))]
+
+    return r_df, meta_df
 
 
 def clean(i_df):
@@ -325,15 +339,29 @@ def rotate(i_df,
     # get a list of column names
     c_name = list(i_df.columns.values)
 
+    #create dataframe for metadata
+    meta = pd.DataFrame(columns=['array', 'code', 'name', 'latitude', 'longitude', 'cgm_latitude',
+       'cgm_longitude', 'declination', 'lshell', 'mlt_midnight', 'mlt_ut',
+       'year'])
+
+    #get station data for CARISMA array
+    stn_cgm = utils.load_station_coor(param='CARISMA',col='array', year=dt.year)   
+    # if the stn_dat can't be found don't rotate
+    # but still return meta data
+    if stn_cgm is None:
+        geo_stn = utils.load_station_geo(param='CARISMA',col='array')
+        for stn in site:
+            stn_dat = geo_stn[geo_stn['code'] == stn.upper()].reset_index(drop=True)
+            meta = pd.concat([meta,stn_dat], axis=0, sort=False, ignore_index=True)
+
+        return i_df, meta   
+
     for stn in site:
         stn = stn.upper()
         if stn+'_X' not in c_name:
             continue
 
-        stn_dat = utils.load_station_coor(param=stn, year=dt.year)
-        # if the stn_dat can't be found don't rotate
-        if stn_dat is None:
-            return i_df
+        stn_dat = stn_cgm[stn_cgm['code'] == stn].reset_index(drop=True)
         dec = float(stn_dat['declination'])
 
         h = i_df[stn+'_X'].astype(float) * np.cos(np.deg2rad(dec)) + \
@@ -344,13 +372,7 @@ def rotate(i_df,
         i_df[stn+'_H'] = h
         i_df[stn+'_D'] = d
 
-        # fill in station cooridinat info
-        # this would be better as metadata
-        # but not possible in pandas
-        i_df[stn+'_declination'] = float(stn_dat['declination'])
-        i_df[stn+'_cgmlat'] = float(stn_dat['cgm_latitude'])
-        i_df[stn+'_cgmlon'] = float(stn_dat['cgm_longitude'])
-        i_df[stn+'_lshell'] = float(stn_dat['lshell'])
-        i_df[stn+'_mlt'] = float(stn_dat['mlt_midnight'])
+        # add meta data to data frame
+        meta = pd.concat([meta,stn_dat], axis=0, sort=False, ignore_index=True)
 
-    return i_df
+    return i_df, meta
