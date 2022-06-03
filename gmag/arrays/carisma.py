@@ -291,6 +291,7 @@ def load(site: str = ['GILL'],
 
     #add PI to metadata
     meta_df['Time Resolution'] = res 
+    meta_df['Coordinates'] = 'Geographic North - X, Eas - Y, Vertical Down - Z, Geomagnetic North - H, East- D, Vertical Down - Z'
     meta_df['PI'] = pi
     meta_df['Institution'] = pi_i   
     

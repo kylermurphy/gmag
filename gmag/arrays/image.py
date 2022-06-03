@@ -313,7 +313,8 @@ def load(site: str = ['AND'],
     res = res.index[0].total_seconds()
 
     #add PI to metadata
-    meta_df['Time Resolution'] = res 
+    meta_df['Time Resolution'] = res
+    meta_df['Coordinates'] = 'Geographic North - X, Eas - Y, Vertical Down - Z, Geomagnetic North - H, East- D, Vertical Down - Z' 
     meta_df['PI'] = pi
     meta_df['Institution'] = pi_i
     
