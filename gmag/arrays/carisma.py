@@ -285,8 +285,8 @@ def load(site: str = ['GILL'],
     r_df, meta_df = rotate(d_df, site, sdate)
 
     #get the nominal resolution of the dataframe
-    res = (pd.Series(i_df.index[1:]) -
-               pd.Series(i_df.index[:-1])).value_counts()
+    res = (pd.Series(r_df.index[1:]) -
+               pd.Series(r_df.index[:-1])).value_counts()
     res = res.index[0].total_seconds()
 
     #add PI to metadata
