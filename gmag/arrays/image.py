@@ -63,6 +63,8 @@ from gmag import utils
 
 local_dir =os.path.join(gmag.config_set['data_dir'],'magnetometer','IMAGE')
 http_dir = gmag.config_set['im_http']
+pi = 'Liisa Juusola'
+pi_i = 'Finnish Meteorological Institute'  
 
 # check if local dir exists
 if not os.path.exists(local_dir):
@@ -227,7 +229,7 @@ def load(site: str = ['AND'],
     Returns
     -------
     r_df : DataFrame
-        Cleaned and rotated (if possible) IMAGE magnetometer data
+        Cleaned and rotated (if possible) IMAGE magnetometer data  and station metadata
     """
     # create a site list for returns
     if type(site) is str:
@@ -300,12 +302,24 @@ def load(site: str = ['AND'],
         # clean data frame
         c_df = clean(s_df)
         # rotate data frame
-        r_df = rotate(c_df, s_l, sdate)
+        r_df, meta_df = rotate(c_df, s_l, sdate)
         r_df = r_df.set_index('t')
     else:
-        return None
+        return None, None
 
-    return r_df
+    #get the nominal resolution of the dataframe
+    res = (pd.Series(r_df.index[1:]) -
+               pd.Series(r_df.index[:-1])).value_counts()
+    res = res.index[0].total_seconds()
+
+    #add PI to metadata
+    meta_df['Time Resolution'] = res
+    meta_df['Coordinates'] = 'Geographic North - X, Eas - Y, Vertical Down - Z, Geomagnetic North - H, East- D, Vertical Down - Z' 
+    meta_df['PI'] = pi
+    meta_df['Institution'] = pi_i
+    
+
+    return r_df, meta_df
 
 
 def clean(i_df):
@@ -354,11 +368,25 @@ def rotate(i_df,
     """
     dt = pd.to_datetime(date)
 
+    #create dataframe for metadata
+    meta = pd.DataFrame(columns=['array', 'code', 'name', 'latitude', 'longitude', 'cgm_latitude',
+       'cgm_longitude', 'declination', 'lshell', 'mlt_midnight', 'mlt_ut',
+       'year'])
+
+    stn_cgm = utils.load_station_coor(param='IMAGE',col='array', year=dt.year)    
+    # if the stn_dat can't be found don't rotate
+    # but still return meta data
+    if stn_cgm is None:
+        geo_stn = utils.load_station_geo(param='IMAGE',col='array')
+        for stn in site:
+            stn_dat = geo_stn[geo_stn['code'] == stn.upper()].reset_index(drop=True)
+            meta = pd.concat([meta,stn_dat], axis=0, sort=False, ignore_index=True)
+
+        #add PI to metadata
+        return i_df, meta
+
     for stn in site:
-        stn_dat = utils.load_station_coor(param=stn, year=dt.year)
-        # if the stn_dat can't be found don't rotate
-        if stn_dat is None:
-            return i_df
+        stn_dat = stn_cgm[stn_cgm['code'] == stn].reset_index(drop=True)
         dec = float(stn_dat['declination'])
 
         # some of the IMAGE magnetometers
@@ -378,13 +406,5 @@ def rotate(i_df,
             i_df[stn+'_H'] = h
             i_df[stn+'_D'] = d
 
-        # fill in station cooridinat info
-        # this would be better as metadata
-        # but not possible in pandas
-        i_df[stn+'_declination'] = float(stn_dat['declination'])
-        i_df[stn+'_cgmlat'] = float(stn_dat['cgm_latitude'])
-        i_df[stn+'_cgmlon'] = float(stn_dat['cgm_longitude'])
-        i_df[stn+'_lshell'] = float(stn_dat['lshell'])
-        i_df[stn+'_mlt'] = float(stn_dat['mlt_midnight'])
-
-    return i_df
+        meta = pd.concat([meta,stn_dat], axis=0, sort=False, ignore_index=True)
+    return i_df, meta
