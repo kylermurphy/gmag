@@ -23,7 +23,7 @@ This code provides utility to load and download data from various ground-based m
 
 The ```carisma``` modules loads data from the CARISMA magnetometer array. 
 
-The ```canopus``` module loads data from the older CANOPUS array avaiable for download at the CARISMA website. The ```canopus``` module does not download data.
+The ```canopus``` module loads data from the older CANOPUS array avaiable for download at the CARISMA website (pre 1 April 2005). The ```canopus``` module does not download data.
 
 The ```image``` modules loads data from IMAGE. 
 
