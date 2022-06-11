@@ -88,5 +88,3 @@ df, meta = themis.load('KUUJ',sdate='2012-01-01',ndays=22, dl=True,force=True)
 import gmag.arrays.canopus as canopus
 df, meta = canopus.load('ISLL',sdate='2001-01-01',ndays=1)
 ```
-
-
