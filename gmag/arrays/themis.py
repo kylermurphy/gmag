@@ -265,7 +265,7 @@ def load(site: str = ['KUUJ'],
             test_col = ['Magnetic North', 'Magnetic East', 'Vertical Down']
             lab_col = ['H','D','Z']
 
-            columns=[(stn.upper()+'_'+l_col if c_col.replace(',','-').split('-')[0].strip() == t_col \
+            columns=[(stn.upper()+'_'+l_col if c_col[0].astype(str).replace(',','-').split('-')[0].strip() == t_col \
                     else stn.upper()+'_'+c_col.strip()) \
                     for c_col,t_col,l_col in zip(cdf_col,test_col,lab_col)]
             i_df = pd.DataFrame(data=dat, columns=columns)
@@ -279,10 +279,9 @@ def load(site: str = ['KUUJ'],
         else:
             d_df = d_df.join(s_df,how='outer')
 
-
         stn_dat = stn_vals[stn_vals['code'] == stn.upper()].reset_index(drop=True)
         stn_dat['Time Resolution'] = res
-        stn_dat['Coordinates'] = ', '.join(cdf_col).strip()
+        stn_dat['Coordinates'] = ', '.join([str(c_col[0]).strip() for c_col in cdf_col ]).strip()
         stn_dat['PI'] = pi
         stn_dat['Institution'] = pi_i
         
