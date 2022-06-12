@@ -330,11 +330,11 @@ def clean(i_df):
     # flag is '.' for good
     # anything else is bad
     if flag:
-        i_df.loc[i_df[flag] != '.', 0:3] = np.nan
+        i_df.iloc[i_df[flag] != '.', 0:3] = np.nan
     # z component should always
     # be positive
     if zcom:
-        i_df.loc[i_df[zcom] < 0, 0:3] = np.nan
+        i_df.iloc[i_df[zcom] < 0, 0:3] = np.nan
 
     return i_df
 
