@@ -281,7 +281,7 @@ def load(site: str = ['KUUJ'],
 
         stn_dat = stn_vals[stn_vals['code'] == stn.upper()].reset_index(drop=True)
         stn_dat['Time Resolution'] = res
-        stn_dat['Coordinates'] = ', '.join([str(c_col[0]).strip() for c_col in cdf_col ]).strip()
+        stn_dat['Coordinates'] = ', '.join([str(c_col[0]).strip() for c_col in cdf_col]).strip()
         stn_dat['PI'] = pi
         stn_dat['Institution'] = pi_i
         
