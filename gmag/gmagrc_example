@@ -1,0 +1,23 @@
+;Example gmag configuration file.
+;To activate the configuration file
+;move file to the gmag directory
+;~/.gmag/gmagrc
+
+[DEFAULT]
+;The directory where data will loaded
+;and downloaded from
+data_dir = Insert you data directory here
+
+;Required for downloading CARISMA
+;magnetometer data
+ca_http = http://data.carisma.ca/
+
+;Required for downloading IMAGE
+;magnetometer data.
+im_http = https://space.fmi.fi/image/www/data_download.php?
+
+;Required for doloading THEMIS
+;magnetometer data.
+th_http = http://themis.ssl.berkeley.edu/data/themis/
+
+
