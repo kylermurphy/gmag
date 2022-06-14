@@ -70,6 +70,8 @@ car_dat[sdate:edate][p_col].subtract(car_dat[p_col].mean()).plot(ylabel='nT', xl
 plt.title(sdate[0:11]+' Substorm/Pseudobreakup',y=8.25)
 ```
 
+![Multi-Panel Plot](/gmag/assets/img/CA_substorm_example.png)
+
 ### Multi-Station Stacked Plot
 
 Create a single panel stacked plot of the H component magnetic field from CARISMA stations apart of the Churchill line.
@@ -119,3 +121,5 @@ car_dat[sdate:edate][p_col].subtract(car_dat[sdate:edate][p_col].mean()-y_shift)
                                                             figsize=[6,10])
 plt.title(sdate[0:11]+' ULF Wave')
 ```
+
+![Multi-Station Stacked Plot](/gmag/assets/img/CA_ulf_example.png)
