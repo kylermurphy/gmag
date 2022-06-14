@@ -10,19 +10,6 @@ import os
 
 import gmag
 
-
-try:
-    import igrf12
-except ImportError:
-    igrf12 = None
-try:
-    import aacgmv2
-except ImportError:
-    aacgmv2 = None
-
-
-# TODO add code to generate stn text files by year
-
 def l_dipole(cgm_lat):
 
     return 1. / (np.cos(np.deg2rad(cgm_lat))**2.)
