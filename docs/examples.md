@@ -2,161 +2,118 @@
 layout: default
 ---
 
-# Arrays and Stations 
+# GMAG Examples 
 
-## [Station table and map.][1]
+A few simple example of loading and plotting ground-based magnetometer data using the GMAG module. 
 
-## IMPORTANT NOTES
+### Single Station Plot
 
-1. THEMIS is an excellent resourcee for the ground-based magnetometer arrays loaded by ```gmag```. However, data downloaded from the THEMIS data server are not necessarily  THEMIS magnetometers. Please appropriately reference and acknowledge each array whose data you use;  acknowledgements and reference for the arrays (when available) can be found below.
-2. The data from the THEMIS data server are generally in geomagnetic cooridinates, though this is not a given. To overcome this the returned metadata Pandas DataFrame stores data labels from the CDF for data loaded using the ```themis``` module. These labels will specify the coordinate system of the loaded data.
-3. CARISMA and IMAGE data loaded using the ```carisma``` and ```image``` modules are roated from XYZ to HDZ. 
+Create a single station plot using from data loaded using the ```themis``` module. 
 
-## Arrays
+```python
+# Plot a simple time series from
+# a single station loaded using
+# the THEMIS module
 
-Below is a list of the arrays suported by the ```gmag``` code. Additional details for each array including the arrays webiste, terms of use, data download, map of stations, and acknowledgement are found below.
+# import required modules
+import numpy as np
+import matplotlib.pyplot as plt
+import gmag.arrays.themis as themis
 
-Information on individual stations can be found [here][1].
+# define start and end dates for plotting
+sdate = '2011-04-09 05:30:00'
+edate = '2011-04-09 06:30:00'
 
-| Array | Module | Secondary Module |
-|-------|--------|------------------|
-| [CARISMA](#carisma) | ```carisma``` | ```themis```|
-| [CANOPUS](#carisma) | ```canopus``` | N/A |
-| [CANMOS](#canmos) | ```themis``` | N/A |
-| [AUTUMN and AUTUMN X](#autumn-and-autumn-x)  | ```themis``` | N/A |
-| [DTU](#dtu)  | ```themis``` | N/A |
-| [IMAGE](#image) | ```image``` | ```themis``` |
-| [GIMA](#gima)  | ```themis``` | N/A |
-| [MACCS](#maccs)  | ```themis``` | N/A |
-| [McMAC](#mcmac)  | ```themis``` | N/A |
-| [THEMIS EPO and GBO](#themis-epo-and-gbo)  | ```themis``` | N/A |
-| [USGS](#usgs)  | ```themis``` | N/A |
-| [PENGUIN](#penguin)  | ```themis``` | N/A |
+# load data
+th_dat, th_meta = themis.load(['SNKQ'],sdate,ndays=1)
 
+# plot all data in the DataFrame between
+# sdate and edate
+th_dat[sdate:edate].plot(ylabel='nT', xlabel='Time - UT', figsize=[6,6],subplots=True)
+plt.title(sdate[0:11]+' Substorm',y=3.35)
+```
 
-Station data can typically be downloaded from the homepage of each array. However, a significant amount of data can be downloaded from the [THEMIS data server](http://themis.ssl.berkeley.edu/data/themis/thg/l2/mag/), [THEMIS ftp server](ftp://justice.ssl.berkeley.edu), and corresponding [CDAWeb mirror](ftp://cdaweb.gsfc.nasa.gov/pub/data/themis/thg/l2/mag/) in the form of CDFs.
+### Multi-Panel Plot
 
-The [THEMIS website](http://themis.ssl.berkeley.edu) is also an excellent resource for information pertaining the stations and corresponding arrays which are stored on the [THEMIS data server](http://themis.ssl.berkeley.edu/data/themis/thg/l2/mag/). See also this [overview](ftp://apollo.ssl.berkeley.edu/pub/THEMIS/3%20Ground%20Systems/3.2%20Science%20Operations/Science%20Operations%20Documents/GMAG_Station_Data_Processing_Notes.pdf) 
+Create a multi-panel plot of the H component magnetic field from select CARISMA magnetometer stations using the ```carisma``` module. 
 
-- [Fluxgate Magnetometer Overview](http://themis.ssl.berkeley.edu/instrument_gmags.shtml)
-- [Ground Magnetometer Data Availability](http://themis.ssl.berkeley.edu/gmag/gmag_list.php?selyear=4000&selmonth=13&smap=on&sinfo=on&saelist=on&ae=on)
-- [Data Policy and Credits for various arrays](http://themis.ssl.berkeley.edu/roadrules.shtml). However always check with the arrays homepage for updated polices and terms of conditions (below).
+```python
+# Plot multi-panel plot of the H compoment
+# magnetic field for select CARSIMA stations
 
+# import required modules
+import gmag.arrays.carisma as carisma
+import numpy as np
+import matplotlib.pyplot as plt
 
---- 
+# define start and end date for plotting and loading
+# assume a single day is loaded
+sdate = '2005-07-17 08:00:00'
+edate = '2005-07-17 12:30:00'
 
-#### CARISMA/CANOPUS
+# define component to be plotted
+comp='H'
 
-The Canadian Array for Realtime Investigations of Magnetic Activity, [CARISMA](http://carisma.ca/), hosted by the University of Alberta. Formerly the e Canadian Auroral Network for the OPEN Program Unified Study (CANOPUS, pre 1 April 2005).
+# load data
+car_dat, car_meta=carisma.load(['GILL','ISLL','PINA','RABB','FSMI','FSIM','MCMU'],sdate)
 
-- [Terms and Conditions of use](http://carisma.ca/carisma-data/data-use-requirements)
-- [Data download](http://carisma.ca/carisma-data-repository)
-- [Map of stations](http://carisma.ca/station-information)
-- Acknowledgement: _"I.R. Mann, D.K. Milling and the rest of the CARISMA team for use of GMAG data. CARISMA is operated by the University of Alberta, funded by the Canadian Space Agency."_
+# find the correct columns of the DataFrame
+p_col = [col for col in car_dat.columns if col[-1] == comp]
 
----
+# plot the DataFrame between sdate and edate 
+# plot only p_col columns and subtrac the mean from each column
+# before plotting
+car_dat[sdate:edate][p_col].subtract(car_dat[p_col].mean()).plot(ylabel='nT', xlabel='Time - UT',
+                                                            figsize=[6,10],subplots=True)
+plt.title(sdate[0:11]+' Substorm/Pseudobreakup',y=8.25)
+```
 
-#### CANMOS
+### Multi-Station Stacked Plot
 
-The Natural Resources Canada Canadian Magnetic Observatory System, [CANMOS](http://geomag.nrcan.gc.ca/obs/canmos-en.php).
+Create a single panel stacked plot of the H component magnetic field from CARISMA stations apart of the Churchill line.
 
-- [Terms and Conditions of use](http://geomag.nrcan.gc.ca/data-donnee/sd-en.php)
-- [Data download](http://geomag.nrcan.gc.ca/data-donnee/dl/dl-en.php)
-- [Map of stations](http://geomag.nrcan.gc.ca/obs/default-en.php)
-- Acknowledgement: acknowledge the Geological Survey of Canada as the source of the data.
+```python
+# plot a stacked plot of CARISMA the H component
+# magnetic field for stations along the Churchill line
 
----
+# import required modules
+import gmag.arrays.carisma as carisma
+import numpy as np
+import matplotlib.pyplot as plt
 
-#### AUTUMN and AUTUMN X
+# define start and end date for plotting 
+# use start date for loading data
+sdate = '2014-11-05 13:25:00'
+edate = '2014-11-05 14:25:00'
 
-The Athatbasca University THEMIS UCLA Magnetometer Network, [AUTUMN and AUTUMNX](http://autumn.athabascau.ca/).
+# define component for plotting
+comp='H'
 
-- Data download via [CDAWeb](ftp://cdaweb.gsfc.nasa.gov/pub/data/themis/thg/l2/mag/) and [THEMIS](http://themis.ssl.berkeley.edu/data/themis/thg/l2/mag/)
-- Acknowledgement: _"Martin Connors and C.T. Russell and the rest of the AUTUMN/AUTUMNX team for use of the GMAG data."_
+# load data
+car_dat, car_meta=carisma.load(['PINA','ISLL','GILL','FCHU','RANK'],sdate)
 
----
+# find the columns from the loaded DataFrame that have comp
+# in the title, these are the columns that will be plotted
+p_col = [col for col in car_dat.columns if col[-1] == comp]
 
-#### DTU
+# determine the shift to apply to each time series so that they don't
+# overlatp
 
-Technical University of Denmark National Space Institute ground based magnetometer array, [DTU](http://www.space.dtu.dk/english/Research/Scientific_data_and_models/Magnetic_Ground_Stations).
+# the shift is determined using the DataFrame returned by the describe()
+# method which stores the DataFrame stats including max and min of each column
+# only use columns from p_col and values between the start and end of plotting
+# defined by sdate and edate
+# the shift in the y direction is defined by 1.5 times the range of the series
+y_shift = np.array([(val['max']-val['min'])/1.5 for col_h, val in car_dat[sdate:edate][p_col].describe().iteritems()])
 
-- [Terms and Conditions of Use](http://www.space.dtu.dk/english/Research/Scientific_data_and_models/Magnetic_Ground_Stations/dtu_data_policies)
-- [Data Download](http://www.space.dtu.dk/english/Research/Scientific_data_and_models/Magnetic_Ground_Stations#requ), currently under constructions. Data can also be downloaded via via [CDAWeb](ftp://cdaweb.gsfc.nasa.gov/pub/data/themis/thg/l2/mag/) and [THEMIS](http://themis.ssl.berkeley.edu/data/themis/thg/l2/mag/).
-- [Map of Stations](http://www.space.dtu.dk/English/Research/Scientific_data_and_models/Magnetic_Ground_Stations.aspx#map)
-- Acknowledgement: _"Magnetometer data from the Greenland Magnetometer Array were provided by the National Space Institute at the Technical University of Denmark (DTU Space)."_
+# the cumsum() method determines the cumalitative sum up
+# to each index
+# the cumsum() ensures timeseries don't overlap
+y_shift = (y_shift-y_shift.min()).cumsum()
 
----
-
-#### IMAGE
-
-The International Monitor for Auroral Geomagnetic Effects, [IMAGE](http://space.fmi.fi/image/www/index.php?page=home), ground based magnetometer array. Data is provided by multiple institutions, see [IMAGE organization](http://space.fmi.fi/image/www/index.php?page=contributors) for details.
-
-- [Terms and Conditions of Use](http://space.fmi.fi/image/www/index.php?page=rules_of_road)
-- [Data Download](http://space.fmi.fi/image/www/index.php?page=request#)
-- [Map of stations](http://space.fmi.fi/image/www/index.php?page=maps)
-- Acknowledgement: _"We thank the institutes who maintain the IMAGE Magnetometer Array: Tromsø Geophysical Observatory of UiT the Arctic University of Norway (Norway), Finnish Meteorological Institute (Finland), Institute of Geophysics Polish Academy of Sciences (Poland), GFZ German Research Centre for Geosciences (Germany), Geological Survey of Sweden (Sweden), Swedish Institute of Space Physics (Sweden), Sodankylä Geophysical Observatory of the University of Oulu (Finland), and Polar Geophysical Institute (Russia)."_
-
----
-
-#### GIMA
-
-The Geophysical Institute Magnetometer Array, [GIMA](https://www.gi.alaska.edu/monitors/magnetometer) at the University of Alaska Fairbanks.
-
-- [Terms and Conditions](https://www.gi.alaska.edu/monitors/magnetometer) under **Citing Magnetometer Data**.
-- [Data Download](https://www.gi.alaska.edu/monitors/magnetometer/archive)
-- Acknowledgement: _"Data provided by the Geophysical Institute Magnetometer Array operated by the Geophysical Institute, University of Alaska."_
-
----
-
-#### MACCS
-
-The Augsburg College Space Physics Magnetometer Array for Cups and Cleft Studies, [MACCS](http://space.augsburg.edu/maccs/index.html)
-
-- [Terms and Conditions](http://space.augsburg.edu/maccs/datausepolicy.html)
-- [Data Download](http://space.augsburg.edu/maccs/requestdatafile.jsp)
-- [Map of Stations](http://space.augsburg.edu/maccs/coordinates.html)
-- Acknowledgement: _"Erik Steinmetz, Augsburg College for the use of GMAG data."_
-
----
-
-#### McMAC
-
-The Mid‐continent MAgnetoseismic Chain, [McMAC magnetometers](https://agupubs.onlinelibrary.wiley.com/doi/full/10.1002/jgra.50274).
-
-- Data Download via [CDAWeb](ftp://cdaweb.gsfc.nasa.gov/pub/data/themis/thg/l2/mag/) and [THEMIS](http://themis.ssl.berkeley.edu/data/themis/thg/l2/mag/).
-- Acknowledgement: _"Peter Chi for use of the McMAC data and NSF for support through grant ATM-0245139."_
-
-
----
-
-#### THEMIS EPO and GBO
-
-The Time History of Events and Macroscal Interaction During Substorms (THEMIS) Ground Based Observatory (GBO) and Educations and Public Outreach (EPO) [magnetoemters](http://themis.ssl.berkeley.edu/instrument_gmags.shtml).
-
-- [Terms and Conditions](http://themis.ssl.berkeley.edu/roadrules.shtml)
-- [Data Download](http://themis.ssl.berkeley.edu/data/themis/thg/l2/mag/)
-- [Map of Stations](http://themis.ssl.berkeley.edu/instrument_gmags.shtml)
-- Acknowledgement: _"S. Mende and C. T. Russell for use of the GMAG data and NSF for support through grant AGS-1004814."_
-
----
-
-#### USGS
-
-The Unites States Geological Survery, [USGS magnetometers](https://www.usgs.gov/natural-hazards/geomagnetism]).
-
-- [Terms and Conditions](https://www.usgs.gov/natural-hazards/geomagnetism/science/download-data?qt-science_center_objects=0#qt-science_center_objects)
-- [Data Download](https://www.usgs.gov/natural-hazards/geomagnetism/science/web-service-0?qt-science_center_objects=0#qt-science_center_objects)
-- [Map of stations](https://www.usgs.gov/natural-hazards/geomagnetism/science/observatories?qt-science_center_objects=0#qt-science_center_objects)
-- Acknowledgement: _"Original data provided by the USGS Geomagnetism Program (http://geomag.usgs.gov)."_
-
----
-
-#### PENGUIN
-
-The Virgina Tech Polar Experimental Network for Geospace Upper atmosphere Investigations, [PENGUIN](http://mist.nianet.org/index.html) Ground Based Observatory.
-
-- [Terms and Conditions](http://mist.nianet.org/CDFdata/VT_MIST_Data_Policy.pdf)
-- Data Download, [IDL save files](http://mist.nianet.org/IDLsavePGx/) and [CDFs](http://mist.nianet.org/CDFdata/)
-- Acknowledgement: _"Polar Experimental Network for Geospace Upper atmosphere Investigations (PENGUIn) Ground Based Observatory, PI, C. Robert Clauer, Virginia Tech. This effort is supported by the National Science Foundation through the following awards: ANT0839858, ATM922979 (Virginia Tech), and ANT0838861 (University of Michigan)."_
-
-[1]: ./stations.md
+# plot p_col columns of the data frame between sdate and edate
+# subtract the mean from each time series and apply the y-shit
+car_dat[sdate:edate][p_col].subtract(car_dat[sdate:edate][p_col].mean()-y_shift).plot(ylabel='nT', xlabel='Time - UT',
+                                                            figsize=[6,10])
+plt.title(sdate[0:11]+' ULF Wave')
+```
