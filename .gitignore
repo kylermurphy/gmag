@@ -1,3 +1,7 @@
+# gmag files
+# ignore user gmagrc file
+gmagrc
+
 # vs code files
 .vscode
 
