@@ -33,6 +33,8 @@ th_dat[sdate:edate].plot(ylabel='nT', xlabel='Time - UT', figsize=[6,6],subplots
 plt.title(sdate[0:11]+' Substorm',y=3.35)
 ```
 
+![Single Station Plot](/gmag/assets/img/TH_substorm_example.png)
+
 ### Multi-Panel Plot
 
 Create a multi-panel plot of the H component magnetic field from select CARISMA magnetometer stations using the ```carisma``` module. 
