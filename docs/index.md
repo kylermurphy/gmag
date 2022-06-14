@@ -24,6 +24,8 @@ Table and map of [stations][19] for each array.
 
 ## Installation
 
+Download or fork the repository. Replace the example configuration file ```gmagrc_example``` with ```gmagrc``` and fill in the variable ```data_dir``` with the directory you would like all files downloaded then CD to the local GMAG directory and install via:
+
 ```bash
 pip install -e .
 ```
