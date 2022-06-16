@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+"""
+Simple set of utilites for reading the config file
+
+"""
+
 import configparser
 import os
 import gmag
