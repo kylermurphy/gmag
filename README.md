@@ -1,5 +1,7 @@
 # README for gmag code
 
+[![DOI](https://zenodo.org/badge/186512442.svg)](https://zenodo.org/badge/latestdoi/186512442)
+
 Basic documentation for gmag code. 
 
 Requires: Pandas, NumPy, wget, requests, cdflib.
