@@ -1,3 +1,9 @@
+# Installation
+
+```pip install -e .```
+
+Requires: Pandas, NumPy, wget, requests, cdflib.
+
 # Some information on the stations and arrays. 
 
 The code will load data from the CARISMA, IMAGE, and THEMIS websites. The THEMIS website is an excellent resource as it has magnetometer data for various stations all stored in a common (fairly common) data format that's a bit easier to load. 
