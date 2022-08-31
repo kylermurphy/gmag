@@ -1,10 +1,12 @@
 # README for gmag code
 
-Basic documentation for gmag code. 
+[![DOI](https://zenodo.org/badge/186512442.svg)](https://zenodo.org/badge/latestdoi/186512442)
+
+## Installation
+
+```pip install -e .```
 
 Requires: Pandas, NumPy, wget, requests, cdflib.
-
-Installation: ```pip install -e .```
 
 ## gmagrc
 
