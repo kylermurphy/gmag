@@ -123,3 +123,74 @@ plt.title(sdate[0:11]+' ULF Wave')
 ```
 
 ![Multi-Station Stacked Plot](/gmag/assets/img/CA_ulf_example.png)
+
+### Identify and Loading Data from Stations within a Fixed Region
+
+```python
+import pandas as pd
+from gmag import utils
+import gmag.arrays.carisma as carisma
+import gmag.arrays.image as image
+import gmag.arrays.themis as themis
+
+#find all stations between 18-24 MLT
+#and L shells 6-8 during an event observed
+#on 2018-01-01/04:00:00 UT
+
+#set time period and
+#location of interest
+date = pd.to_datetime('2018-01-01/04:00:00')
+
+mlt_min = 18
+mlt_max = 24
+l_min = 6
+l_max = 8
+
+#load all stations
+all_stn = utils.load_station_coor(param='*', year=date.year)
+
+#calculate the MLT of the stations for the date
+#the MLT at 0 UT is stored in the mlt_ut column
+#mlt for the date of interest is then mlt at 0 UT
+#plus current UT
+all_stn['mlt'] = (all_stn['mlt_ut']+date.hour) % 24
+
+#create masks for the mlt and lshell regions
+mlt_mask = (all_stn['mlt'] >= mlt_min) & (all_stn['mlt'] <= mlt_max)
+l_mask = (all_stn['lshell'] >= l_min) & (all_stn['lshell'] <= l_max)
+
+#create masks for the arrays
+car_mask = all_stn['array'] == 'CARISMA'
+img_mask = all_stn['array'] == 'IMAGE'
+
+#identify stations from each array
+#carisma stations and image stations
+car_stn = all_stn[car_mask & mlt_mask & l_mask]
+img_stn = all_stn[img_mask & mlt_mask & l_mask] 
+#themis stations the ~ is bitwise negation, in this case
+#stations that aren't apart of image or carisma (1 if 0, 0 if 1)
+thm_stn = all_stn[~img_mask & ~car_mask & mlt_mask & l_mask]
+
+#create an empty DataFrames for all 
+#loaded data and metadata
+mag_meta = pd.DataFrame()
+mag_data = pd.DataFrame()
+
+#loop through stations DataFrames
+#to load data for each array
+for stn in [car_stn,img_stn,thm_stn]:
+    #skip if no stations were 
+    #identified
+    if stn.shape[0] == 0:
+        continue
+    elif stn['array'].iloc[0] == 'CARISMA':
+        l_dat, l_meta = carisma.load(car_stn['code'],date,ndays=1,drop_flag=True)
+    elif stn['array'].iloc[0] == 'IMAGE':
+        l_dat, l_meta = image.load(img_stn['code'],date,ndays=1,drop_flag=True)
+    else:
+        l_dat, l_meta = themis.load(thm_stn['code'],date,ndays=1)
+    
+    # add loaded data to 
+    mag_data = mag_data.join(l_dat,how='outer')
+    mag_meta = pd.concat([mag_meta,l_meta], axis=0, sort=False, ignore_index=True)
+```
