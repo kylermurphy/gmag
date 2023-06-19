@@ -14,7 +14,7 @@ def get_config_file():
     """Return location of configuration file
 
     In order
-    1. ~/.magpy/gmagrc
+    1. ~/.gmag/gmagrc
     2. The installation folder of gmag
 
     Returns
@@ -30,7 +30,7 @@ def get_config_file():
 
     # Get user configuration location
     home_dir = Path.home()
-    config_file_1 = home_dir / 'gmagrc' / config_filename
+    config_file_1 = home_dir / '.gmag' / config_filename
 
     module_dir = Path(gmag.__file__)
     config_file_2 = module_dir / '..' / config_filename
