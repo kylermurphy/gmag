@@ -122,7 +122,7 @@ def list_files(sdate,
     f_df = pd.DataFrame(columns=['date', 'fname', 'dir'])
 
     # create file name and directory structure
-    for di, dt in d_ser.iteritems():
+    for di, dt in d_ser.items():
         # filename
         fnm = prefix + \
             '{0:04d}{1:02d}{2:02d}{3:02d}{4}'.format(

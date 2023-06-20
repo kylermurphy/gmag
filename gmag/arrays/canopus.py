@@ -102,7 +102,7 @@ def list_files(site,
     f_df = pd.DataFrame(columns=['date', 'fname', 'dir', 'hdir'])
 
     # create file name and directory structure
-    for di, dt in d_ser.iteritems():
+    for di, dt in d_ser.items():
         # filename
         fnm = '{0:04d}{1:02d}{2:02d}'.format(
             dt.year, dt.month, dt.day)
