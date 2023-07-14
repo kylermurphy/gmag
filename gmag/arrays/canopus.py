@@ -102,7 +102,7 @@ def list_files(site,
     f_df = pd.DataFrame(columns=['date', 'fname', 'dir', 'hdir'])
 
     # create file name and directory structure
-    for di, dt in d_ser.iteritems():
+    for di, dt in d_ser.items():
         # filename
         fnm = '{0:04d}{1:02d}{2:02d}'.format(
             dt.year, dt.month, dt.day)
@@ -128,8 +128,9 @@ def list_files(site,
         else:
             hdr = False
 
-        f_df = f_df.append(
-            {'date': dt, 'fname': fnm, 'dir': fdr, 'hdir': hdr}, ignore_index=True)
+        # Create a dataframe row for this site/date and append to answer
+        curr_file_df = pd.DataFrame( {'date': dt, 'fname': fnm, 'dir': fdr, 'hdir': hdr}, index = [0])
+        f_df = pd.concat( [ f_df, curr_file_df], ignore_index=True)
 
     # CANOPUS only goes to 2005-04-01
     # after this the data transitions to
@@ -232,7 +233,7 @@ def load(site: str = ['GILL'],
                 continue
             i_df = i_df.set_index('t')
 
-            s_df = s_df.append(i_df)
+            s_df = pd.concat([s_df, i_df])
 
         # clean data
         if not s_df.empty:

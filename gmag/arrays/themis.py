@@ -114,7 +114,7 @@ def list_files(site,
     f_df = pd.DataFrame(columns=['date', 'fname', 'dir', 'hdir'])
 
     # create file name and directory structure
-    for di, dt in d_ser.iteritems():
+    for di, dt in d_ser.items():
         # filename
         fnm = '{0:04d}{1:02d}{2:02d}'.format(
             dt.year, dt.month, dt.day)
@@ -131,8 +131,9 @@ def list_files(site,
         # http directory
         hdr = http_dir+'thg/l2/mag/'+site.lower()+'/{0:04d}/'.format(dt.year)
 
-        f_df = f_df.append(
-            {'date': dt, 'fname': fnm, 'dir': fdr, 'hdir': hdr}, ignore_index=True)
+        # Create a dataframe row for this site/date and append to answer
+        curr_file_df = pd.DataFrame( {'date': dt, 'fname': fnm, 'dir': fdr, 'hdir': hdr}, index=[0])
+        f_df = pd.concat( [ f_df, curr_file_df], ignore_index=True)
 
     return f_df
 
@@ -256,11 +257,12 @@ def load(site: str = ['KUUJ'],
             cdf_col = cdf_file.varget('thg_mag_'+stn.lower()+'_labl')
             t = pd.to_datetime(cdf_file.varget(
                 'thg_mag_'+stn.lower()+'_time'), unit='s')
-            pi = cdf_file.attget('PI_name',0)['Data']
-            pi_i = cdf_file.attget('PI_affiliation',0)['Data']
-            res = float(cdf_file.attget('Time_resolution',0)['Data'][0:-1])
+            #pi = cdf_file.attget('PI_name',0)['Data']
+            pi = cdf_file.attget('PI_name',0).Data
+            pi_i = cdf_file.attget('PI_affiliation',0).Data
+            res = float(cdf_file.attget('Time_resolution',0).Data[0:-1])
 
-            cdf_file.close()
+            #cdf_file.close()
             # create data frame
             test_col = ['Magnetic North', 'Magnetic East', 'Vertical Down']
             lab_col = ['H','D','Z']
@@ -272,7 +274,7 @@ def load(site: str = ['KUUJ'],
             i_df['t'] = t
             i_df = i_df.set_index('t')
             # append to returned data frame
-            s_df = s_df.append(i_df, sort=False)
+            s_df = pd.concat([s_df, i_df])
 
         if d_df.empty:
             d_df = s_df

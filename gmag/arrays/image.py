@@ -122,7 +122,7 @@ def list_files(sdate,
     f_df = pd.DataFrame(columns=['date', 'fname', 'dir'])
 
     # create file name and directory structure
-    for di, dt in d_ser.iteritems():
+    for di, dt in d_ser.items():
         # filename
         fnm = prefix + \
             '{0:04d}{1:02d}{2:02d}{3:02d}{4}'.format(
@@ -137,8 +137,9 @@ def list_files(sdate,
         if not os.path.exists(fdr):
             os.makedirs(fdr)
 
-        f_df = f_df.append(
-            {'date': dt, 'fname': fnm, 'dir': fdr}, ignore_index=True)
+        # Create dataframe row for this site and date. Append to the answer
+        curr_file_df = pd.DataFrame( {'date': dt, 'fname': fnm, 'dir': fdr}, index = [0])
+        f_df = pd.concat( [ f_df, curr_file_df], ignore_index=True)
 
     return f_df
 
@@ -275,7 +276,7 @@ def load(site: str = ['AND'],
         i_df['t'] = pd.to_datetime(
             i_df['t'].astype(str), format='%Y %m %d %H %M %S')
 
-        d_df = d_df.append(i_df, ignore_index=True)
+        d_df = pd.concat([d_df, i_df], ignore_index=True)
 
     if d_df.empty:
         return None
