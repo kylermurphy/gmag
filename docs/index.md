@@ -2,6 +2,10 @@
 layout: default
 ---
 
+# Updates
+
+Version 2.0.0 has just been released. Major update is compatibility with Pandas >=2.0.2 and cdflib >=1.0.4!
+
 # Overview
 
 This code provides the utility to **download and load data** from various ground-based magnetometer arrays into a Pandas DataFrame. The code also return **metadata** for the loaded stations. The code is divided into a seperate module for each array. These are the ```carisma```, ```canopus```, ```image```, and ```themis``` modules. 
