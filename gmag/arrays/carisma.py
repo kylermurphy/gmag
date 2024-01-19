@@ -278,7 +278,7 @@ def load(site: str = ['GILL'],
         if d_df.empty:
             d_df = c_df
         else:
-            d_df = d_df.join(c_df)
+            d_df = d_df.join(c_df,how='outer')
 
     # rotate data into HDZ
     if d_df.empty:
