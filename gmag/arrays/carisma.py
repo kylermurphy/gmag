@@ -45,7 +45,7 @@ References
 
 
 import os
-import requests
+from requests import get as rget
 import pandas as pd
 import numpy as np
 
@@ -107,7 +107,7 @@ def list_files(site,
         d_ser = pd.Series(pd.date_range(
             start=sdate, periods=ndays, freq='D'))
 
-    f_df = pd.DataFrame(columns=['date', 'fname', 'dir', 'hdir'])
+    f_df = pd.DataFrame()
 
     # create file name and directory structure
     for di, dt in d_ser.items():
@@ -133,7 +133,11 @@ def list_files(site,
                 
         # Create a dataframe row for this site/date and append to answer
         curr_file_df = pd.DataFrame( {'date': dt, 'fname': fnm, 'dir': fdr, 'hdir': hdr}, index = [0])
-        f_df = pd.concat( [ f_df, curr_file_df], ignore_index=True)
+        
+        if f_df.empty:
+            f_df = curr_file_df
+        else:
+            f_df = pd.concat( [ f_df, curr_file_df], ignore_index=True)
 
     return f_df
 
@@ -179,7 +183,7 @@ def download(site=None,
         if not os.path.exists(fn) or force:
             # check for online file, if it exists
             #get it
-            ureq = requests.get(row['hdir']+row['fname'], timeout=5.0)
+            ureq = rget(row['hdir']+row['fname'], timeout=5.0)
             if ureq.ok:
                 print('Downloading {0}'.format(row['hdir']+row['fname']))
                 open(fn,'wb').write(ureq.content)
@@ -389,7 +393,7 @@ def rotate(i_df,
             continue
 
         stn_dat = stn_cgm[stn_cgm['code'] == stn].reset_index(drop=True)
-        dec = float(stn_dat['declination'])
+        dec = float(stn_dat.loc[0,'declination'])
 
         h = i_df[stn+'_X'].astype(float) * np.cos(np.deg2rad(dec)) + \
             i_df[stn+'_Y'].astype(float) * np.sin(np.deg2rad(dec))
@@ -401,7 +405,10 @@ def rotate(i_df,
         i_df[stn+'_D'] = d
 
         # add meta data to data frame
-        meta = pd.concat([meta,stn_dat], axis=0, sort=False, ignore_index=True)
+        if meta.empty:
+            meta = stn_dat
+        else:
+            meta = pd.concat([meta,stn_dat], axis=0, sort=False, ignore_index=True)
 
 
     return i_df, meta

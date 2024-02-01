@@ -139,7 +139,11 @@ def list_files(sdate,
 
         # Create dataframe row for this site and date. Append to the answer
         curr_file_df = pd.DataFrame( {'date': dt, 'fname': fnm, 'dir': fdr}, index = [0])
-        f_df = pd.concat( [ f_df, curr_file_df], ignore_index=True)
+        
+        if f_df.empty:
+            f_df = curr_file_df
+        else:
+            f_df = pd.concat( [ f_df, curr_file_df], ignore_index=True)
 
     return f_df
 
@@ -388,7 +392,7 @@ def rotate(i_df,
 
     for stn in site:
         stn_dat = stn_cgm[stn_cgm['code'] == stn].reset_index(drop=True)
-        dec = float(stn_dat['declination'])
+        dec = float(stn_dat.loc[0,'declination'])
 
         # some of the IMAGE magnetometers
         # have negative Z values. Z should
@@ -407,5 +411,8 @@ def rotate(i_df,
             i_df[stn+'_H'] = h
             i_df[stn+'_D'] = d
 
-        meta = pd.concat([meta,stn_dat], axis=0, sort=False, ignore_index=True)
+        if meta.empty:
+            meta = stn_dat
+        else:
+            meta = pd.concat([meta,stn_dat], axis=0, sort=False, ignore_index=True)
     return i_df, meta

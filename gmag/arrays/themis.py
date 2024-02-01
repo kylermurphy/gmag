@@ -133,7 +133,11 @@ def list_files(site,
 
         # Create a dataframe row for this site/date and append to answer
         curr_file_df = pd.DataFrame( {'date': dt, 'fname': fnm, 'dir': fdr, 'hdir': hdr}, index=[0])
-        f_df = pd.concat( [ f_df, curr_file_df], ignore_index=True)
+        
+        if f_df.empty:
+            f_df = curr_file_df
+        else:
+            f_df = pd.concat( [ f_df, curr_file_df], ignore_index=True)
 
     return f_df
 
@@ -290,6 +294,9 @@ def load(site: str = ['KUUJ'],
         stn_dat['PI'] = pi
         stn_dat['Institution'] = pi_i
 
-        meta_df = pd.concat([meta_df,stn_dat], axis=0, sort=False, ignore_index=True)
+        if meta_df.empty:
+            meta_df = stn_dat
+        else:
+            meta_df = pd.concat([meta_df,stn_dat], axis=0, sort=False, ignore_index=True)
 
     return d_df, meta_df
