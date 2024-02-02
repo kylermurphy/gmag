@@ -6,7 +6,8 @@
 [DEFAULT]
 ;The directory where data will loaded
 ;and downloaded from
-data_dir = Insert you data directory here
+;uncomment and insert your data directory
+;data_dir = Insert your data directory here
 
 ;Required for downloading CARISMA
 ;magnetometer data
