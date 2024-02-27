@@ -36,7 +36,10 @@ def get_config_file():
     config_file_2 = module_dir / '..' / config_filename
     config_file_2 = config_file_2.resolve()
 
-    for f in [config_file_1, config_file_2]:
+    # Configuration file for running notebooks on colab 
+    config_file_3 = home_dir / config_filename
+
+    for f in [config_file_1, config_file_2, config_file_3]:
         if f.is_file():
             return str(f)    
 
