@@ -1,0 +1,20 @@
+# Resistivity model for Fort Churchill (fchu)
+#
+# Trichtchenko, Fernberg, Boteler: One-dimensional Layered Earth Models of Canada 
+#  for GIC Applications, https://doi.org/10.4095/314804
+#
+# fchu located in Manitoba Z4c North
+#
+layer, thickness (m), resistivity (Ohm-m)
+1, 40, 30
+2, 550, 100
+3, 16000, 9300
+4, 13000, 14500
+5, 10000, 8400
+6, 61000, 500
+7, 150000, 160
+8, 160000, 29
+9, 110000, 8
+10, 150000, 2.4
+11, 230000, 1.12
+12, 100000, 0.48

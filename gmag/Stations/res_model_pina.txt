@@ -1,0 +1,19 @@
+# Resistivity model for Pinawa (PINA)
+#
+# Trichtchenko, Fernberg, Boteler: One-dimensional Layered Earth Models of Canada 
+#  for GIC Applications, https://doi.org/10.4095/314804
+#
+# PINA located in Manitoba Z1a
+#
+layer, thickness (m), resistivity (Ohm-m)
+1, 50, 30
+2, 12000, 5500
+3, 19000, 350
+4, 8000, 500
+5, 61000, 300
+6, 150000, 158
+7, 160000, 29
+8, 110000, 8
+9, 150000, 2.4
+10, 230000, 1.12
+11, 100000, 0.48
