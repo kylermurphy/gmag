@@ -29,9 +29,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 
+from pathlib import Path
+
 import numpy as np
 import numpy.typing as npt
+import pandas as pd
 
+import gmag
 
 def calcZ(resistivities: npt.ArrayLike | list,
           thicknesses: npt.ArrayLike | list,
@@ -181,3 +185,36 @@ def calcE(mag_x: npt.ArrayLike,
     Ey_t = np.real(np.fft.irfft(Ey_fft)[:N0])
 
     return Ex_t, Ey_t
+
+def read_res(stn: str):
+    """Magntometer station resistivity profile
+
+    Parameters
+    ----------
+    stn : str
+        Ground Magnetometer station profile to load.
+        Files are located in /gmag/stations/
+
+    Returns
+    -------
+    Pandas DataFrame
+        Containing the resitivity profile for the magnetometer station
+    """
+    res_filename = f'res_model_{stn}.txt'
+
+    # Get location of Earth Resistivity Model Files
+    home_dir = Path.home()
+    res_file_1 = home_dir / '.gmag' / 'Stations' / res_filename
+
+    module_dir = Path(gmag.__file__)
+    res_file_2 = module_dir / '..' / 'Stations' / res_filename
+    res_file_2 = res_file_2.resolve()
+
+    # Configuration file for running notebooks on colab 
+    res_file_3 = home_dir / 'Stations' / res_filename
+
+    for f in [res_file_1, res_file_2, res_file_3]:
+        if f.is_file():
+            return pd.read_csv(str(f),comment='#')
+
+    return -1
