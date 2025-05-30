@@ -5,7 +5,7 @@
 #
 # GILL located in Manitoba Z3a
 #
-layer, thickness (m), resistivity (Ohm-m)
+layer,thickness (m),resistivity (Ohm-m)
 1, 10, 30
 2, 13000, 10000
 3, 15000, 15000

@@ -5,7 +5,7 @@
 #
 # ISLL located in Manitoba Z2a
 #
-layer, thickness (m), resistivity (Ohm-m)
+layer,thickness (m),resistivity (Ohm-m)
 1, 10, 30
 2, 13000, 13500
 3, 17000, 35500

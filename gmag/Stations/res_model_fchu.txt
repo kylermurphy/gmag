@@ -5,7 +5,7 @@
 #
 # fchu located in Manitoba Z4c North
 #
-layer, thickness (m), resistivity (Ohm-m)
+layer,thickness (m),resistivity (Ohm-m)
 1, 40, 30
 2, 550, 100
 3, 16000, 9300
