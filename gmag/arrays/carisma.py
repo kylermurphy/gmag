@@ -262,7 +262,8 @@ def load(site: str = ['GILL'],
                                       stn.upper()+'_Z',
                                       stn.upper()+'_flag'],
                                widths=[14, 10, 10, 10, 2],
-                               compression=comp)
+                               compression=comp,
+                               engine='pyarrow')
 
             try:
                 i_df['t'] = pd.to_datetime(i_df['t'],
