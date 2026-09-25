@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gmag"
+version = "2.0.2"
+description = "Data I/O for ground-based magnetometers"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE.md"]
+authors = [{ name = "Kyle Murphy", email = "kylemurphy.spacephys@gmail.com" }]
+dependencies = [
+    "pandas>=1.5.3",
+    "numpy",
+    "wget",
+    "requests",
+    "cdflib>=1.0.4",
+    "chardet",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+]
+
+[project.urls]
+Homepage = "https://github.com/kylermurphy/gmag/"
+
+[tool.setuptools.packages.find]
+include = ["gmag*"]
+
+[tool.setuptools.package-data]
+# Read from the installed package directory by gmag.utils / gmag.config,
+# so they must ship in wheels (setup.py never included them).
+gmag = ["Stations/*", "gmagrc_example"]
